@@ -58,94 +58,99 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
     double pxHeight = MediaQuery.of(context).size.height;
     double pxWidth = MediaQuery.of(context).size.width;
 
-    return InAppWebView(
-      key: widget.key,
-      initialData: InAppWebViewInitialData(
-          data: player(_width),
-          baseUrl: Uri.parse(widget.baseUrl),
-          encoding: 'utf-8',
-          mimeType: 'text/html'),
-      initialOptions: InAppWebViewGroupOptions(
-          ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: false),
-          crossPlatform: InAppWebViewOptions(
-              userAgent: userAgent,
-              mediaPlaybackRequiresUserGesture: false,
-              transparentBackground: true)),
-      onWebViewCreated: (webController) {
-        controller.updateValue(
-          controller.value.copyWith(webViewController: webController),
-        );
-        /* add js handlers */
-        webController
-          ..addJavaScriptHandler(
-              handlerName: 'Ready',
-              callback: (_) {
-                print('player ready');
-                if (!controller.value.isReady) {
-                  controller
-                      .updateValue(controller.value.copyWith(isReady: true));
-                }
-              })
-          ..addJavaScriptHandler(
-              handlerName: 'VideoPosition',
-              callback: (params) {
-                controller.updateValue(controller.value.copyWith(
-                    videoPosition: double.parse(params.first.toString())));
-              })
-          ..addJavaScriptHandler(
-              handlerName: 'VideoData',
-              callback: (params) {
-                //print('VideoData: ' + json.decode(params.first));
-                controller.updateValue(controller.value.copyWith(
-                  videoTitle: params.first['title'].toString(),
-                  videoDuration:
-                      double.parse(params.first['duration'].toString()),
-                  videoWidth: double.parse(params.first['width'].toString()),
-                  videoHeight: double.parse(params.first['height'].toString()),
-                ));
-              })
-          ..addJavaScriptHandler(
-              handlerName: 'StateChange',
-              callback: (params) {
-                switch (params.first) {
-                  case -2:
-                    controller.updateValue(
-                        controller.value.copyWith(isBuffering: true));
-                    break;
-                  case -1:
-                    controller.updateValue(controller.value
-                        .copyWith(isPlaying: false, hasEnded: true));
-                    widget.onEnded(VimeoMetaData(
-                        videoDuration: Duration(
-                          seconds: controller.value.videoDuration?.round() ?? 0,
-                        ),
-                        videoId: controller.initialVideoId,
-                        videoTitle: controller.value.videoTitle ?? "NON"));
-                    break;
-                  case 0:
-                    controller.updateValue(controller.value
-                        .copyWith(isReady: true, isBuffering: false));
-                    break;
-                  case 1:
-                    controller.updateValue(
-                        controller.value.copyWith(isPlaying: false));
-                    break;
-                  case 2:
-                    controller.updateValue(
-                        controller.value.copyWith(isPlaying: true));
-                    break;
-                  default:
-                    print('default player state');
-                }
-              });
-      },
-      onLoadStop: (_, __) {
-        if (_isPlayerReady) {
+    return IgnorePointer(
+      ignoring: true,
+      child: InAppWebView(
+        key: widget.key,
+        initialData: InAppWebViewInitialData(
+            data: player(_width),
+            baseUrl: Uri.parse(widget.baseUrl),
+            encoding: 'utf-8',
+            mimeType: 'text/html'),
+        initialOptions: InAppWebViewGroupOptions(
+            ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: false),
+            crossPlatform: InAppWebViewOptions(
+                userAgent: userAgent,
+                mediaPlaybackRequiresUserGesture: false,
+                transparentBackground: true)),
+        onWebViewCreated: (webController) {
           controller.updateValue(
-            controller.value.copyWith(isReady: true),
+            controller.value.copyWith(webViewController: webController),
           );
-        }
-      },
+          /* add js handlers */
+          webController
+            ..addJavaScriptHandler(
+                handlerName: 'Ready',
+                callback: (_) {
+                  print('player ready');
+                  if (!controller.value.isReady) {
+                    controller
+                        .updateValue(controller.value.copyWith(isReady: true));
+                  }
+                })
+            ..addJavaScriptHandler(
+                handlerName: 'VideoPosition',
+                callback: (params) {
+                  controller.updateValue(controller.value.copyWith(
+                      videoPosition: double.parse(params.first.toString())));
+                })
+            ..addJavaScriptHandler(
+                handlerName: 'VideoData',
+                callback: (params) {
+                  //print('VideoData: ' + json.decode(params.first));
+                  controller.updateValue(controller.value.copyWith(
+                    videoTitle: params.first['title'].toString(),
+                    videoDuration:
+                        double.parse(params.first['duration'].toString()),
+                    videoWidth: double.parse(params.first['width'].toString()),
+                    videoHeight:
+                        double.parse(params.first['height'].toString()),
+                  ));
+                })
+            ..addJavaScriptHandler(
+                handlerName: 'StateChange',
+                callback: (params) {
+                  switch (params.first) {
+                    case -2:
+                      controller.updateValue(
+                          controller.value.copyWith(isBuffering: true));
+                      break;
+                    case -1:
+                      controller.updateValue(controller.value
+                          .copyWith(isPlaying: false, hasEnded: true));
+                      widget.onEnded(VimeoMetaData(
+                          videoDuration: Duration(
+                            seconds:
+                                controller.value.videoDuration?.round() ?? 0,
+                          ),
+                          videoId: controller.initialVideoId,
+                          videoTitle: controller.value.videoTitle ?? "NON"));
+                      break;
+                    case 0:
+                      controller.updateValue(controller.value
+                          .copyWith(isReady: true, isBuffering: false));
+                      break;
+                    case 1:
+                      controller.updateValue(
+                          controller.value.copyWith(isPlaying: false));
+                      break;
+                    case 2:
+                      controller.updateValue(
+                          controller.value.copyWith(isPlaying: true));
+                      break;
+                    default:
+                      print('default player state');
+                  }
+                });
+        },
+        onLoadStop: (_, __) {
+          if (_isPlayerReady) {
+            controller.updateValue(
+              controller.value.copyWith(isReady: true),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -162,7 +167,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
       </head>
       <body>
-        <iframe id="vframe" src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&auto_play=${controller.flags.autoPlay}" width="100%" height="100%" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+        <iframe id="vframe" src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&auto_play=${controller.flags.autoPlay}" width="100%" height="100%" allowtransparency="true" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; modestbranding; gyroscope"></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
         var tag = document.createElement('script');
