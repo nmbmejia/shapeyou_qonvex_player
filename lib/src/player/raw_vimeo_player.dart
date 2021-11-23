@@ -167,16 +167,22 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
       </head>
       <body>
-        <iframe id="vframe" src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&auto_play=${controller.flags.autoPlay}" width="100%" height="100%" allowtransparency="true" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; modestbranding; gyroscope" controls="0"></iframe>
+        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&auto_play=${controller.flags.autoPlay}" width="100%" height="100%" allowtransparency="true" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; modestbranding; gyroscope" controls=""></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
-        var tag = document.createElement('script');
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-       
+        let iframe = document.querySelector('iframe');
+        var options = {
+          id: ${controller.initialVideoId},
+          title: true,
+          transparent: true,
+          autoplay: ${controller.flags.autoPlay},
+          speed: true,
+          controls: false,
+          dnt: false,
+        };
         
         var videoData = {};
-        var vimPlayer = new Vimeo.Player('vframe');
+        var vimPlayer = new Vimeo.Player(iframe, options);
         
         vimPlayer.getVideoTitle().then(function(title) {
           videoData['title'] = title;
