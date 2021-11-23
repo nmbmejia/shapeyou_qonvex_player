@@ -166,21 +166,21 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
     }
   }
 
-  _onBottomPlayButton() {
-    if (controller.value.isPlaying) {
-      controller.pause();
-      setState(() {
-        _centerUiVisible = true;
-        _bottomUiVisible = false;
-        _uiOpacity = 1.0;
-      });
-      if (t != null && t!.isActive) {
-        t!.cancel();
-      }
-    } else {
-      controller.play();
-    }
-  }
+  // _onBottomPlayButton() {
+  //   if (controller.value.isPlaying) {
+  //     controller.pause();
+  //     setState(() {
+  //       _centerUiVisible = true;
+  //       _bottomUiVisible = false;
+  //       _uiOpacity = 1.0;
+  //     });
+  //     if (t != null && t!.isActive) {
+  //       t!.cancel();
+  //     }
+  //   } else {
+  //     controller.play();
+  //   }
+  // }
 
   _onUiTouched() {
     if (t != null && t!.isActive) {
@@ -377,22 +377,22 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
                           child: Flex(
                               direction: Axis.horizontal,
                               children: <Widget>[
-                                GestureDetector(
-                                  child: SizedBox(
-                                    height: height * 0.05,
-                                    width: width * 0.1,
-                                    child: Icon(
-                                      controller.value.isPlaying
-                                          ? Icons.pause
-                                          : Icons.play_arrow,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    /* pause button clicked */
-                                    _onBottomPlayButton();
-                                  },
-                                ),
+                                // GestureDetector(
+                                //   child: SizedBox(
+                                //     height: height * 0.05,
+                                //     width: width * 0.1,
+                                //     child: Icon(
+                                //       controller.value.isPlaying
+                                //           ? Icons.pause
+                                //           : Icons.play_arrow,
+                                //       color: Colors.white,
+                                //     ),
+                                //   ),
+                                //   onTap: () {
+                                //     /* pause button clicked */
+                                //     _onBottomPlayButton();
+                                //   },
+                                // ),
                                 SizedBox(
                                   width: width * 0.6,
                                   child: Slider(
