@@ -59,7 +59,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
     double pxWidth = MediaQuery.of(context).size.width;
 
     return IgnorePointer(
-        ignoring: true,
+        ignoring: false,
         child: InAppWebView(
           key: widget.key,
           initialData: InAppWebViewInitialData(

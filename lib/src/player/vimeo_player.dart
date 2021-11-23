@@ -276,191 +276,191 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
                   },
                   baseUrl: widget.url,
                 ),
-                PositionedTapDetector2(
-                  onTap: (TapPosition position) {
-                    _onUiTouched();
-                  },
-                  onDoubleTap: _handleDoublTap,
-                  child: AnimatedOpacity(
-                    opacity: _uiOpacity,
-                    curve: const Interval(0.5, 1),
-                    duration: const Duration(milliseconds: 600),
-                    child: controller.value.isReady
-                        ? Container(
-                            decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [
-                                  Colors.transparent,
-                                  Colors.transparent,
-                                  Colors.black
-                                ],
-                                    stops: [
-                                  0.0,
-                                  0.75,
-                                  1
-                                ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter)),
-                            child: controller.value.isReady
-                                ? Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        _seekingB
-                                            ? Row(
-                                                children: <Widget>[
-                                                  Text(
-                                                    '${_seekDuration.toString()}s',
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18),
-                                                  ),
-                                                  const Icon(
-                                                    Icons.fast_rewind,
-                                                    color: Colors.white,
-                                                  ),
-                                                ],
-                                              )
-                                            : const SizedBox(),
-                                        _isBuffering
-                                            ? const CircularProgressIndicator(
-                                                strokeWidth: 4,
-                                              )
-                                            : _centerUiVisible
-                                                ? FloatingActionButton(
-                                                    elevation: 0,
-                                                    backgroundColor:
-                                                        Colors.white54,
-                                                    child: const Icon(
-                                                      Icons.play_arrow,
-                                                      color: Colors.white,
-                                                      size: 34,
-                                                    ),
-                                                    onPressed: () {
-                                                      _onPlay();
-                                                    })
-                                                : const SizedBox(),
-                                        _seekingF
-                                            ? Row(
-                                                children: <Widget>[
-                                                  const Icon(
-                                                    Icons.fast_forward,
-                                                    color: Colors.white,
-                                                  ),
-                                                  Text(
-                                                    '${_seekDuration.toString()}s',
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                            : const SizedBox(),
-                                      ],
-                                    ),
-                                  )
-                                : const SizedBox(
-                                    width: 1,
-                                  ),
-                          )
-                        : const SizedBox(),
-                  ),
-                ),
-                controller.value.isReady && _bottomUiVisible && !_initialLoad
-                    ? Positioned(
-                        height: height * 0.05,
-                        bottom: 0,
-                        child: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 500),
-                          opacity: _uiOpacity,
-                          child: Flex(
-                              direction: Axis.horizontal,
-                              children: <Widget>[
-                                GestureDetector(
-                                  child: SizedBox(
-                                    height: height * 0.05,
-                                    width: width * 0.1,
-                                    child: Icon(
-                                      controller.value.isPlaying
-                                          ? Icons.pause
-                                          : Icons.play_arrow,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    /* pause button clicked */
-                                    _onBottomPlayButton();
-                                  },
-                                ),
-                                SizedBox(
-                                  width: width * 0.6,
-                                  child: Slider(
-                                    onChangeStart: (val) {
-                                      setState(() {
-                                        _seekingF = true;
-                                      });
-                                    },
-                                    label: _getTimestamp(),
-                                    onChangeEnd: (end) {
-                                      controller.seekTo(end.roundToDouble());
-                                      setState(() {
-                                        _seekingF = false;
-                                      });
-                                    },
-                                    inactiveColor: Colors.blueGrey,
-                                    min: 0,
-                                    max: controller.value.videoDuration != null
-                                        ? (controller.value.videoDuration ??
-                                                0) +
-                                            1.0
-                                        : 0.0,
-                                    value: _position,
-                                    onChanged: (value) {
-                                      if (!_seekingF) {
-                                        setState(() {
-                                          if (value >= 0 &&
-                                              value <= _position) {
-                                            _position = value;
-                                          }
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  child: Text(
-                                    _getTimestamp() + "",
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 10),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  child: SizedBox(
-                                    width: width * 0.1,
-                                    child: const Icon(
-                                      Icons.settings,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  onTap: () {},
-                                ),
-                                GestureDetector(
-                                  child: SizedBox(
-                                    width: width * 0.1,
-                                    child: const Icon(
-                                      Icons.fullscreen,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  onTap: () {},
-                                )
-                              ]),
-                        ),
-                      )
-                    : const SizedBox(
-                        height: 1,
-                      )
+                // PositionedTapDetector2(
+                //   onTap: (TapPosition position) {
+                //     _onUiTouched();
+                //   },
+                //   onDoubleTap: _handleDoublTap,
+                //   child: AnimatedOpacity(
+                //     opacity: _uiOpacity,
+                //     curve: const Interval(0.5, 1),
+                //     duration: const Duration(milliseconds: 600),
+                //     child: controller.value.isReady
+                //         ? Container(
+                //             decoration: const BoxDecoration(
+                //                 gradient: LinearGradient(
+                //                     colors: [
+                //                   Colors.transparent,
+                //                   Colors.transparent,
+                //                   Colors.black
+                //                 ],
+                //                     stops: [
+                //                   0.0,
+                //                   0.75,
+                //                   1
+                //                 ],
+                //                     begin: Alignment.topCenter,
+                //                     end: Alignment.bottomCenter)),
+                //             child: controller.value.isReady
+                //                 ? Center(
+                //                     child: Row(
+                //                       mainAxisAlignment:
+                //                           MainAxisAlignment.spaceEvenly,
+                //                       children: <Widget>[
+                //                         _seekingB
+                //                             ? Row(
+                //                                 children: <Widget>[
+                //                                   Text(
+                //                                     '${_seekDuration.toString()}s',
+                //                                     style: const TextStyle(
+                //                                         color: Colors.white,
+                //                                         fontSize: 18),
+                //                                   ),
+                //                                   const Icon(
+                //                                     Icons.fast_rewind,
+                //                                     color: Colors.white,
+                //                                   ),
+                //                                 ],
+                //                               )
+                //                             : const SizedBox(),
+                //                         _isBuffering
+                //                             ? const CircularProgressIndicator(
+                //                                 strokeWidth: 4,
+                //                               )
+                //                             : _centerUiVisible
+                //                                 ? FloatingActionButton(
+                //                                     elevation: 0,
+                //                                     backgroundColor:
+                //                                         Colors.white54,
+                //                                     child: const Icon(
+                //                                       Icons.play_arrow,
+                //                                       color: Colors.white,
+                //                                       size: 34,
+                //                                     ),
+                //                                     onPressed: () {
+                //                                       _onPlay();
+                //                                     })
+                //                                 : const SizedBox(),
+                //                         _seekingF
+                //                             ? Row(
+                //                                 children: <Widget>[
+                //                                   const Icon(
+                //                                     Icons.fast_forward,
+                //                                     color: Colors.white,
+                //                                   ),
+                //                                   Text(
+                //                                     '${_seekDuration.toString()}s',
+                //                                     style: const TextStyle(
+                //                                       color: Colors.white,
+                //                                     ),
+                //                                   )
+                //                                 ],
+                //                               )
+                //                             : const SizedBox(),
+                //                       ],
+                //                     ),
+                //                   )
+                //                 : const SizedBox(
+                //                     width: 1,
+                //                   ),
+                //           )
+                //         : const SizedBox(),
+                //   ),
+                // ),
+                // controller.value.isReady && _bottomUiVisible && !_initialLoad
+                //     ? Positioned(
+                //         height: height * 0.05,
+                //         bottom: 0,
+                //         child: AnimatedOpacity(
+                //           duration: const Duration(milliseconds: 500),
+                //           opacity: _uiOpacity,
+                //           child: Flex(
+                //               direction: Axis.horizontal,
+                //               children: <Widget>[
+                //                 GestureDetector(
+                //                   child: SizedBox(
+                //                     height: height * 0.05,
+                //                     width: width * 0.1,
+                //                     child: Icon(
+                //                       controller.value.isPlaying
+                //                           ? Icons.pause
+                //                           : Icons.play_arrow,
+                //                       color: Colors.white,
+                //                     ),
+                //                   ),
+                //                   onTap: () {
+                //                     /* pause button clicked */
+                //                     _onBottomPlayButton();
+                //                   },
+                //                 ),
+                //                 SizedBox(
+                //                   width: width * 0.6,
+                //                   child: Slider(
+                //                     onChangeStart: (val) {
+                //                       setState(() {
+                //                         _seekingF = true;
+                //                       });
+                //                     },
+                //                     label: _getTimestamp(),
+                //                     onChangeEnd: (end) {
+                //                       controller.seekTo(end.roundToDouble());
+                //                       setState(() {
+                //                         _seekingF = false;
+                //                       });
+                //                     },
+                //                     inactiveColor: Colors.blueGrey,
+                //                     min: 0,
+                //                     max: controller.value.videoDuration != null
+                //                         ? (controller.value.videoDuration ??
+                //                                 0) +
+                //                             1.0
+                //                         : 0.0,
+                //                     value: _position,
+                //                     onChanged: (value) {
+                //                       if (!_seekingF) {
+                //                         setState(() {
+                //                           if (value >= 0 &&
+                //                               value <= _position) {
+                //                             _position = value;
+                //                           }
+                //                         });
+                //                       }
+                //                     },
+                //                   ),
+                //                 ),
+                //                 SizedBox(
+                //                   child: Text(
+                //                     _getTimestamp() + "",
+                //                     style: const TextStyle(
+                //                         color: Colors.white, fontSize: 10),
+                //                   ),
+                //                 ),
+                //                 GestureDetector(
+                //                   child: SizedBox(
+                //                     width: width * 0.1,
+                //                     child: const Icon(
+                //                       Icons.settings,
+                //                       color: Colors.white,
+                //                     ),
+                //                   ),
+                //                   onTap: () {},
+                //                 ),
+                //                 GestureDetector(
+                //                   child: SizedBox(
+                //                     width: width * 0.1,
+                //                     child: const Icon(
+                //                       Icons.fullscreen,
+                //                       color: Colors.white,
+                //                     ),
+                //                   ),
+                //                   onTap: () {},
+                //                 )
+                //               ]),
+                //         ),
+                //       )
+                //     : const SizedBox(
+                //         height: 1,
+                //       )
               ],
             ),
           ),
