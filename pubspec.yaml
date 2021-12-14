@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_inappwebview: ^5.3.2
-  positioned_tap_detector_2: ^1.0.4
+  # positioned_tap_detector_2: ^1.0.4
 
 dev_dependencies:
   flutter_test:
