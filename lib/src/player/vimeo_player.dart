@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
+// import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 import 'package:qonvex_player/src/controllers/vimeo_player_controller.dart';
 import 'package:qonvex_player/src/models/vimeo_meta_data.dart';
 import 'package:qonvex_player/src/player/raw_vimeo_player.dart';
@@ -133,118 +133,118 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
     super.dispose();
   }
 
-  _hideUi() {
-    setState(() {
-      _bottomUiVisible = false;
-      _centerUiVisible = false;
-      _uiOpacity = 0.0;
-    });
-  }
+  // _hideUi() {
+  //   setState(() {
+  //     _bottomUiVisible = false;
+  //     _centerUiVisible = false;
+  //     _uiOpacity = 0.0;
+  //   });
+  // }
 
-  _onPlay() {
-    if (controller.value.isPlaying) {
-      controller.pause();
-      _animationController.forward();
-    } else {
-      controller.play();
-      _animationController.reverse();
-    }
+  // _onPlay() {
+  //   if (controller.value.isPlaying) {
+  //     controller.pause();
+  //     _animationController.forward();
+  //   } else {
+  //     controller.play();
+  //     _animationController.reverse();
+  //   }
 
-    if (_initialLoad) {
-      setState(() {
-        _initialLoad = false;
-        _centerUiVisible = false;
-        _bottomUiVisible = true;
-      });
-    } else {
-      setState(() {
-        _centerUiVisible = false;
-        _bottomUiVisible = true;
-      });
+  //   if (_initialLoad) {
+  //     setState(() {
+  //       _initialLoad = false;
+  //       _centerUiVisible = false;
+  //       _bottomUiVisible = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _centerUiVisible = false;
+  //       _bottomUiVisible = true;
+  //     });
 
-      t = Timer(const Duration(seconds: 3), () {
-        _hideUi();
-      });
-    }
-  }
+  //     t = Timer(const Duration(seconds: 3), () {
+  //       _hideUi();
+  //     });
+  //   }
+  // }
 
-  _onBottomPlayButton() {
-    if (controller.value.isPlaying) {
-      controller.pause();
-      setState(() {
-        _centerUiVisible = true;
-        _bottomUiVisible = false;
-        _uiOpacity = 1.0;
-      });
-      if (t != null && t!.isActive) {
-        t!.cancel();
-      }
-    } else {
-      controller.play();
-    }
-  }
+  // _onBottomPlayButton() {
+  //   if (controller.value.isPlaying) {
+  //     controller.pause();
+  //     setState(() {
+  //       _centerUiVisible = true;
+  //       _bottomUiVisible = false;
+  //       _uiOpacity = 1.0;
+  //     });
+  //     if (t != null && t!.isActive) {
+  //       t!.cancel();
+  //     }
+  //   } else {
+  //     controller.play();
+  //   }
+  // }
 
-  _onUiTouched() {
-    if (t != null && t!.isActive) {
-      t!.cancel();
-    }
-    if (_isPlaying) {
-      setState(() {
-        _bottomUiVisible = true;
-        _centerUiVisible = false;
-        _uiOpacity = 1.0;
-      });
-      /* delayed animation */
-      t = Timer(const Duration(seconds: 3), () {
-        _hideUi();
-      });
-    }
-  }
+  // _onUiTouched() {
+  //   if (t != null && t!.isActive) {
+  //     t!.cancel();
+  //   }
+  //   if (_isPlaying) {
+  //     setState(() {
+  //       _bottomUiVisible = true;
+  //       _centerUiVisible = false;
+  //       _uiOpacity = 1.0;
+  //     });
+  //     /* delayed animation */
+  //     t = Timer(const Duration(seconds: 3), () {
+  //       _hideUi();
+  //     });
+  //   }
+  // }
 
-  _handleDoublTap(TapPosition details) {
-    if (t != null && t!.isActive) {
-      t!.cancel();
-    }
-    if (t2 != null && t2!.isActive) {
-      t2!.cancel();
-    }
+  // _handleDoublTap(TapPosition details) {
+  //   if (t != null && t!.isActive) {
+  //     t!.cancel();
+  //   }
+  //   if (t2 != null && t2!.isActive) {
+  //     t2!.cancel();
+  //   }
 
-    setState(() {
-      _bottomUiVisible = true;
-      _centerUiVisible = false;
-      _uiOpacity = 1.0;
-    });
-    if (details.global.dx > MediaQuery.of(context).size.width / 2) {
-      setState(() {
-        _seekingF = true;
-        _seekDuration = _seekDuration +
-            (widget.skipDuration == null ? 0 : widget.skipDuration!);
-      });
-      /* seek fwd */
-      controller.seekTo(
-          _position + (widget.skipDuration == null ? 0 : widget.skipDuration!));
-    } else {
-      setState(() {
-        _seekingB = true;
-        _seekDuration = _seekDuration -
-            (widget.skipDuration == null ? 0 : widget.skipDuration!);
-      });
-      /* seek Backward */
-      controller.seekTo(
-          _position - (widget.skipDuration == null ? 0 : widget.skipDuration!));
-    }
-    /* delayed animation */
-    t = Timer(const Duration(seconds: 3), () {
-      _hideUi();
-    });
-    t2 = Timer(const Duration(seconds: 1), () {
-      setState(() {
-        _seekingF = false;
-        _seekingB = false;
-        _seekDuration = 0;
-      });
-    });
-  }
+  //   setState(() {
+  //     _bottomUiVisible = true;
+  //     _centerUiVisible = false;
+  //     _uiOpacity = 1.0;
+  //   });
+  //   if (details.global.dx > MediaQuery.of(context).size.width / 2) {
+  //     setState(() {
+  //       _seekingF = true;
+  //       _seekDuration = _seekDuration +
+  //           (widget.skipDuration == null ? 0 : widget.skipDuration!);
+  //     });
+  //     /* seek fwd */
+  //     controller.seekTo(
+  //         _position + (widget.skipDuration == null ? 0 : widget.skipDuration!));
+  //   } else {
+  //     setState(() {
+  //       _seekingB = true;
+  //       _seekDuration = _seekDuration -
+  //           (widget.skipDuration == null ? 0 : widget.skipDuration!);
+  //     });
+  //     /* seek Backward */
+  //     controller.seekTo(
+  //         _position - (widget.skipDuration == null ? 0 : widget.skipDuration!));
+  //   }
+  //   /* delayed animation */
+  //   t = Timer(const Duration(seconds: 3), () {
+  //     _hideUi();
+  //   });
+  //   t2 = Timer(const Duration(seconds: 1), () {
+  //     setState(() {
+  //       _seekingF = false;
+  //       _seekingB = false;
+  //       _seekDuration = 0;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
