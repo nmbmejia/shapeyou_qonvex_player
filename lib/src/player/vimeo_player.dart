@@ -16,6 +16,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
   final double? width;
   final double aspectRatio;
   final String url;
+  final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   int? skipDuration;
   final ValueChanged<bool> isCompleted;
   final VoidCallback? onReady;
@@ -28,6 +29,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
       this.height,
       this.aspectRatio = 16 / 9,
       this.skipDuration = 5,
+      this.dataCallback,
       required this.isCompleted,
       this.onReady})
       : super(key: key);
@@ -133,119 +135,6 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
     super.dispose();
   }
 
-  // _hideUi() {
-  //   setState(() {
-  //     _bottomUiVisible = false;
-  //     _centerUiVisible = false;
-  //     _uiOpacity = 0.0;
-  //   });
-  // }
-
-  // _onPlay() {
-  //   if (controller.value.isPlaying) {
-  //     controller.pause();
-  //     _animationController.forward();
-  //   } else {
-  //     controller.play();
-  //     _animationController.reverse();
-  //   }
-
-  //   if (_initialLoad) {
-  //     setState(() {
-  //       _initialLoad = false;
-  //       _centerUiVisible = false;
-  //       _bottomUiVisible = true;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _centerUiVisible = false;
-  //       _bottomUiVisible = true;
-  //     });
-
-  //     t = Timer(const Duration(seconds: 3), () {
-  //       _hideUi();
-  //     });
-  //   }
-  // }
-
-  // _onBottomPlayButton() {
-  //   if (controller.value.isPlaying) {
-  //     controller.pause();
-  //     setState(() {
-  //       _centerUiVisible = true;
-  //       _bottomUiVisible = false;
-  //       _uiOpacity = 1.0;
-  //     });
-  //     if (t != null && t!.isActive) {
-  //       t!.cancel();
-  //     }
-  //   } else {
-  //     controller.play();
-  //   }
-  // }
-
-  // _onUiTouched() {
-  //   if (t != null && t!.isActive) {
-  //     t!.cancel();
-  //   }
-  //   if (_isPlaying) {
-  //     setState(() {
-  //       _bottomUiVisible = true;
-  //       _centerUiVisible = false;
-  //       _uiOpacity = 1.0;
-  //     });
-  //     /* delayed animation */
-  //     t = Timer(const Duration(seconds: 3), () {
-  //       _hideUi();
-  //     });
-  //   }
-  // }
-
-  // _handleDoublTap(TapPosition details) {
-  //   if (t != null && t!.isActive) {
-  //     t!.cancel();
-  //   }
-  //   if (t2 != null && t2!.isActive) {
-  //     t2!.cancel();
-  //   }
-
-  //   setState(() {
-  //     _bottomUiVisible = true;
-  //     _centerUiVisible = false;
-  //     _uiOpacity = 1.0;
-  //   });
-  //   if (details.global.dx > MediaQuery.of(context).size.width / 2) {
-  //     setState(() {
-  //       _seekingF = true;
-  //       _seekDuration = _seekDuration +
-  //           (widget.skipDuration == null ? 0 : widget.skipDuration!);
-  //     });
-  //     /* seek fwd */
-  //     controller.seekTo(
-  //         _position + (widget.skipDuration == null ? 0 : widget.skipDuration!));
-  //   } else {
-  //     setState(() {
-  //       _seekingB = true;
-  //       _seekDuration = _seekDuration -
-  //           (widget.skipDuration == null ? 0 : widget.skipDuration!);
-  //     });
-  //     /* seek Backward */
-  //     controller.seekTo(
-  //         _position - (widget.skipDuration == null ? 0 : widget.skipDuration!));
-  //   }
-  //   /* delayed animation */
-  //   t = Timer(const Duration(seconds: 3), () {
-  //     _hideUi();
-  //   });
-  //   t2 = Timer(const Duration(seconds: 1), () {
-  //     setState(() {
-  //       _seekingF = false;
-  //       _seekingB = false;
-  //       _seekDuration = 0;
-  //     });
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -261,6 +150,7 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
           child: AspectRatio(
             aspectRatio: _aspectRatio,
             child: RawVimeoPlayer(
+              dataCallback: widget.dataCallback,
               controller: widget.controller,
               onEnded: (VimeoMetaData metadata) {
                 widget.isCompleted(true);
@@ -273,28 +163,6 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
       ),
     );
   }
-
-  // _formatDuration(Duration time) {
-  //   var ret = '';
-  //   if (time.inHours > 0) {
-  //     if (time.inHours < 10) {
-  //       ret += '0${time.inHours}:';
-  //     } else {
-  //       ret += '${time.inHours}:';
-  //     }
-  //   }
-  //   if (time.inSeconds > 0) {
-  //     if (time.inSeconds < 10) {
-  //       ret += '0${time.inSeconds}';
-  //     } else {
-  //       ret += '${time.inSeconds}';
-  //     }
-  //   } else {
-  //     ret += '00';
-  //   }
-
-  //   return ret;
-  // }
 
   String _printDuration(Duration duration) {
     String twoDigits(int n) {

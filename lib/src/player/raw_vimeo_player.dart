@@ -10,6 +10,7 @@ class RawVimeoPlayer extends StatefulWidget {
   final Key? key;
   final String baseUrl;
   final VimeoPlayerController controller;
+  final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   final void Function(VimeoMetaData metaData) onEnded;
 
   const RawVimeoPlayer({
@@ -17,6 +18,7 @@ class RawVimeoPlayer extends StatefulWidget {
     required this.baseUrl,
     required this.onEnded,
     required this.controller,
+    this.dataCallback,
   }) : super(key: key);
 
   @override
@@ -83,7 +85,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
             ..addJavaScriptHandler(
                 handlerName: 'Ready',
                 callback: (_) {
-                  print('player ready');
+                  print('player ready xxx');
                   if (!controller.value.isReady) {
                     controller
                         .updateValue(controller.value.copyWith(isReady: true));
@@ -110,13 +112,8 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                 })
             ..addJavaScriptHandler(
                 handlerName: 'StateChange',
-                callback: (params) {
+                callback: (params) async {
                   switch (params.first) {
-                    case -3:
-                      controller.updateValue(controller.value.copyWith(
-                        isFullscreen: false,
-                      ));
-                      break;
                     case -2:
                       controller.updateValue(
                           controller.value.copyWith(isBuffering: true));
@@ -145,12 +142,24 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                           controller.value.copyWith(isPlaying: true));
                       break;
                     case 3:
-                      controller.updateValue(
-                          controller.value.copyWith(isFullscreen: true));
-                      print("FULLSCREEN");
+                      final bool isFullscreen = controller.value.isFullscreen;
+
+                      setState(() {
+                        controller.updateValue(controller.value
+                            .copyWith(isFullscreen: !isFullscreen));
+                      });
+                      print("FULLSCREEN: ${!isFullscreen}");
                       break;
                     default:
                       print('default player state');
+
+                      if (widget.dataCallback != null) {
+                        await Future.delayed(const Duration(milliseconds: 100));
+                        widget.dataCallback!(VimeoPlayerDataCallback(
+                          isFullscreen: controller.value.isFullscreen,
+                          isPlaying: controller.value.isPlaying,
+                        ));
+                      }
                   }
                 });
         },
@@ -218,8 +227,8 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
         vimPlayer.on('bufferend', function() {
           window.flutter_inappwebview.callHandler('StateChange', 0);
         });
-        vimPlayer.on('fullscreen', function(event) {
-          window.flutter_inappwebview.callHandler('StateChange', event ? 3 : -3);
+        vimPlayer.on('fullscreenchange', function() {
+          window.flutter_inappwebview.callHandler('StateChange', 3);
         });
         vimPlayer.on('loaded', function(id) {
           window.flutter_inappwebview.callHandler('Ready');
@@ -281,4 +290,11 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
 
   String get userAgent =>
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36';
+}
+
+class VimeoPlayerDataCallback {
+  final bool isPlaying;
+  final bool isFullscreen;
+  const VimeoPlayerDataCallback(
+      {required this.isFullscreen, required this.isPlaying});
 }
