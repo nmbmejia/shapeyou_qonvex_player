@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 // import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 import 'package:qonvex_player/src/controllers/vimeo_player_controller.dart';
 import 'package:qonvex_player/src/models/vimeo_meta_data.dart';
+import 'package:qonvex_player/src/models/vimeo_player_data_callback.dart';
 import 'package:qonvex_player/src/player/raw_vimeo_player.dart';
 // ignore: import_of_legacy_library_into_null_safe
 
@@ -139,7 +141,12 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Material(
       elevation: 0,
       color: Colors.transparent,
@@ -150,6 +157,7 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
           child: AspectRatio(
             aspectRatio: _aspectRatio,
             child: RawVimeoPlayer(
+              key: widget.key,
               dataCallback: widget.dataCallback,
               controller: widget.controller,
               onEnded: (VimeoMetaData metadata) {

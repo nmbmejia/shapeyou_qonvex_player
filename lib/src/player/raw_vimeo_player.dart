@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:qonvex_player/src/controllers/vimeo_player_controller.dart';
 import 'package:qonvex_player/src/models/vimeo_meta_data.dart';
+import 'package:qonvex_player/src/models/vimeo_player_data_callback.dart';
 
 class RawVimeoPlayer extends StatefulWidget {
   final Key? key;
@@ -62,7 +63,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
     // double pxWidth = MediaQuery.of(context).size.width;
 
     return IgnorePointer(
-      ignoring: Platform.isIOS,
+      ignoring: false,
       child: InAppWebView(
         // key: _key,
         initialData: InAppWebViewInitialData(
@@ -142,24 +143,25 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                           controller.value.copyWith(isPlaying: true));
                       break;
                     case 3:
-                      final bool isFullscreen = controller.value.isFullscreen;
+                      // final bool isFullscreen = controller.value.isFullscreen;
 
                       setState(() {
-                        controller.updateValue(controller.value
-                            .copyWith(isFullscreen: !isFullscreen));
+                        controller.updateValue(
+                          controller.value.copyWith(
+                            isFullscreen: !controller.value.isFullscreen,
+                          ),
+                        );
                       });
-                      print("FULLSCREEN: ${!isFullscreen}");
                       break;
                     default:
                       print('default player state');
-
-                      if (widget.dataCallback != null) {
-                        await Future.delayed(const Duration(milliseconds: 100));
-                        widget.dataCallback!(VimeoPlayerDataCallback(
-                          isFullscreen: controller.value.isFullscreen,
-                          isPlaying: controller.value.isPlaying,
-                        ));
-                      }
+                  }
+                  if (widget.dataCallback != null) {
+                    await Future.delayed(const Duration(milliseconds: 100));
+                    widget.dataCallback!(VimeoPlayerDataCallback(
+                      isFullscreen: controller.value.isFullscreen,
+                      isPlaying: controller.value.isPlaying,
+                    ));
                   }
                 });
         },
@@ -187,7 +189,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
       </head>
       <body>
-        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&dnt=1&playsinline=0&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}" width="100%" height="100%"frameborder="0" allowfullscreen allow=autoplay;fullscreen controls="0"></iframe>
+        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&dnt=1&playsinline=0&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}&quality=1080p" width="100%" height="100%"frameborder="0" allowfullscreen allow=autoplay;fullscreen controls="0"></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
         let iframe = document.querySelector('iframe');
@@ -290,11 +292,4 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
 
   String get userAgent =>
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36';
-}
-
-class VimeoPlayerDataCallback {
-  final bool isPlaying;
-  final bool isFullscreen;
-  const VimeoPlayerDataCallback(
-      {required this.isFullscreen, required this.isPlaying});
 }
