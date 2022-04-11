@@ -29,7 +29,8 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
   void pause() => _callMethod('pause()');
   void seekTo(double delta) => _callMethod('seekTo($delta)');
   void reset() => _callMethod('reset()');
-
+  // bool get isFullscreen => _isFullscreen;
+  // set isFullscreen(bool t) => _isFullscreen = t;
   _callMethod(String methodString) {
     if (value.isReady) {
       value.webViewController?.evaluateJavascript(source: methodString);

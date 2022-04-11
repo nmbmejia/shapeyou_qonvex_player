@@ -57,6 +57,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
     });
   }
 
+  bool _fullscreenHeartbeatEnable = false;
   @override
   Widget build(BuildContext context) {
     // double pxHeight = MediaQuery.of(context).size.height;
@@ -144,14 +145,26 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                       break;
                     case 3:
                       // final bool isFullscreen = controller.value.isFullscreen;
-
                       setState(() {
-                        controller.updateValue(
-                          controller.value.copyWith(
-                            isFullscreen: !controller.value.isFullscreen,
-                          ),
-                        );
+                        _fullscreenHeartbeatEnable =
+                            !_fullscreenHeartbeatEnable;
+                        if (!_fullscreenHeartbeatEnable) {
+                          controller.updateValue(
+                            controller.value.copyWith(
+                              isFullscreen: !controller.value.isFullscreen,
+                            ),
+                          );
+                        }
+                        _fullscreenHeartbeatEnable =
+                            !_fullscreenHeartbeatEnable;
                       });
+                      // setState(() {
+                      //   controller.updateValue(
+                      //     controller.value.copyWith(
+                      //       isFullscreen: !controller.value.isFullscreen,
+                      //     ),
+                      //   );
+                      // });
                       break;
                     default:
                       print('default player state');
