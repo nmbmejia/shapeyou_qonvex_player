@@ -1,6 +1,9 @@
 class VimeoPlayerDataCallback {
   final bool isPlaying;
   final bool isFullscreen;
-  const VimeoPlayerDataCallback(
-      {required this.isFullscreen, required this.isPlaying});
+  // final double currentSecs;
+  const VimeoPlayerDataCallback({
+    required this.isFullscreen,
+    required this.isPlaying,
+  });
 }

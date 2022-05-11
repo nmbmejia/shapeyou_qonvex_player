@@ -13,19 +13,23 @@ import 'package:qonvex_player/src/player/raw_vimeo_player.dart';
 // ignore: must_be_immutable
 class QonvexVimeoPlayer extends StatefulWidget {
   final Key? key;
-  final VimeoPlayerController controller;
+  VimeoPlayerController controller;
   final double? height;
   final double? width;
   final double aspectRatio;
+  final bool allowFullscreen;
   final String url;
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   int? skipDuration;
   final ValueChanged<bool> isCompleted;
+  final ValueChanged<double>? currentSecCallback;
   final VoidCallback? onReady;
 
   QonvexVimeoPlayer(
       {this.key,
       required this.controller,
+      this.currentSecCallback,
+      this.allowFullscreen = true,
       this.width,
       required this.url,
       this.height,
@@ -42,7 +46,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
 
 class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
     with SingleTickerProviderStateMixin {
-  late final VimeoPlayerController controller;
+  late VimeoPlayerController controller;
   late final AnimationController _animationController;
   bool _initialLoad = true;
   late double _position;
@@ -157,11 +161,15 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
           child: AspectRatio(
             aspectRatio: _aspectRatio,
             child: RawVimeoPlayer(
+              allowFullscreen: widget.allowFullscreen,
               key: widget.key,
               dataCallback: widget.dataCallback,
+              currentSecCallback: widget.currentSecCallback,
               controller: widget.controller,
               onEnded: (VimeoMetaData metadata) {
-                widget.isCompleted(true);
+                print(
+                    "PLAYER ON END FULLSCREEN VALUE: ${metadata.isFullscreen}");
+                widget.isCompleted(metadata.isFullscreen);
                 controller.reset();
               },
               baseUrl: widget.url,

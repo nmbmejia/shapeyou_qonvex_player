@@ -7,18 +7,26 @@ import 'package:qonvex_player/src/controllers/vimeo_player_controller.dart';
 import 'package:qonvex_player/src/models/vimeo_meta_data.dart';
 import 'package:qonvex_player/src/models/vimeo_player_data_callback.dart';
 
+// class CompletedCallback {
+//   final bool isFullscreen;
+
+// }
+
 class RawVimeoPlayer extends StatefulWidget {
   final Key? key;
   final String baseUrl;
-  final VimeoPlayerController controller;
+  VimeoPlayerController controller;
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
+  final ValueChanged<double>? currentSecCallback;
   final void Function(VimeoMetaData metaData) onEnded;
-
-  const RawVimeoPlayer({
+  final bool allowFullscreen;
+  RawVimeoPlayer({
     this.key,
     required this.baseUrl,
     required this.onEnded,
     required this.controller,
+    this.currentSecCallback,
+    required this.allowFullscreen,
     this.dataCallback,
   }) : super(key: key);
 
@@ -31,6 +39,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
   late VimeoPlayerController controller = widget.controller;
   // ignore: prefer_final_fields
   bool _isPlayerReady = false;
+  bool _isFullscreen = false;
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   @override
   void initState() {
@@ -57,7 +66,8 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
     });
   }
 
-  bool _fullscreenHeartbeatEnable = false;
+  // bool _fullscreenHeartbeatEnable = false;
+  int fullscreenIndex = 1;
   @override
   Widget build(BuildContext context) {
     // double pxHeight = MediaQuery.of(context).size.height;
@@ -96,6 +106,12 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
             ..addJavaScriptHandler(
                 handlerName: 'VideoPosition',
                 callback: (params) {
+                  // print(
+                  //     "CURRENT TIME: ${double.parse(params.first.toString())}");
+                  if (widget.currentSecCallback != null) {
+                    widget.currentSecCallback!(
+                        double.parse(params.first.toString()));
+                  }
                   controller.updateValue(controller.value.copyWith(
                       videoPosition: double.parse(params.first.toString())));
                 })
@@ -123,13 +139,15 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                     case -1:
                       controller.updateValue(controller.value
                           .copyWith(isPlaying: false, hasEnded: true));
+                      print("HEARTBEAT FULLSCREEN END : $_isFullscreen");
                       widget.onEnded(VimeoMetaData(
-                          videoDuration: Duration(
-                            seconds:
-                                controller.value.videoDuration?.round() ?? 0,
-                          ),
-                          videoId: controller.initialVideoId,
-                          videoTitle: controller.value.videoTitle ?? "NON"));
+                        videoDuration: Duration(
+                          seconds: controller.value.videoDuration?.round() ?? 0,
+                        ),
+                        videoId: controller.initialVideoId,
+                        videoTitle: controller.value.videoTitle ?? "NON",
+                        isFullscreen: _isFullscreen,
+                      ));
                       break;
                     case 0:
                       controller.updateValue(controller.value
@@ -146,18 +164,20 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                     case 3:
                       // final bool isFullscreen = controller.value.isFullscreen;
                       setState(() {
-                        _fullscreenHeartbeatEnable =
-                            !_fullscreenHeartbeatEnable;
-                        if (!_fullscreenHeartbeatEnable) {
+                        fullscreenIndex += 1;
+                        if (fullscreenIndex % 2 == 0) {
+                          _isFullscreen = !_isFullscreen;
                           controller.updateValue(
                             controller.value.copyWith(
                               isFullscreen: !controller.value.isFullscreen,
                             ),
                           );
                         }
-                        _fullscreenHeartbeatEnable =
-                            !_fullscreenHeartbeatEnable;
                       });
+
+                      print(
+                          "HEARTBEAT FULLSCREENss : ${controller.value.isFullscreen}");
+
                       // setState(() {
                       //   controller.updateValue(
                       //     controller.value.copyWith(
@@ -189,6 +209,8 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
     );
   }
 
+  late String allowables =
+      widget.allowFullscreen ? "allow=autoplay;fullscreen" : "allow=autoplay;";
   String player(double width) {
     var _player = '''<html>
       <head>
@@ -202,7 +224,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
       </head>
       <body>
-        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&dnt=0&playsinline=1&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" allowfullscreen allow=autoplay;fullscreen controls="0"></iframe>
+        <iframe src="https://player.vimeo.com/video/textrack=fr.captions?${controller.initialVideoId}?h=${controller.securityId}&dnt=0&playsinline=false&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" controls="0" allow="autoplay;"></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
         let iframe = document.querySelector('iframe');
@@ -213,6 +235,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           autoplay: ${controller.flags.autoPlay},
           speed: true,
           controls: false,
+          playsinline: false,
           dnt: false,
         };
         
