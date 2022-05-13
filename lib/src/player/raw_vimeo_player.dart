@@ -20,13 +20,15 @@ class RawVimeoPlayer extends StatefulWidget {
   final ValueChanged<double>? currentSecCallback;
   final void Function(VimeoMetaData metaData) onEnded;
   final bool allowFullscreen;
+  final bool mute;
   RawVimeoPlayer({
     this.key,
     required this.baseUrl,
     required this.onEnded,
+    this.mute = false,
     required this.controller,
     this.currentSecCallback,
-    required this.allowFullscreen,
+    this.allowFullscreen = true,
     this.dataCallback,
   }) : super(key: key);
 
@@ -209,8 +211,6 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
     );
   }
 
-  late String allowables =
-      widget.allowFullscreen ? "allow=autoplay;fullscreen" : "allow=autoplay;";
   String player(double width) {
     var _player = '''<html>
       <head>
@@ -224,7 +224,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
       </head>
       <body>
-        <iframe src="https://player.vimeo.com/video/textrack=fr.captions?${controller.initialVideoId}?h=${controller.securityId}&dnt=0&playsinline=false&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" controls="0" allow="autoplay;"></iframe>
+        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" allowfullscreen allow=autoplay;fullscreen controls="0"></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
         let iframe = document.querySelector('iframe');
@@ -235,7 +235,6 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           autoplay: ${controller.flags.autoPlay},
           speed: true,
           controls: false,
-          playsinline: false,
           dnt: false,
         };
         
