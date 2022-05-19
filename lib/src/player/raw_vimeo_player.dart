@@ -46,14 +46,14 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _width = window.physicalSize.width;
     _height = window.physicalSize.height;
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
