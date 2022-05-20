@@ -224,7 +224,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
       </head>
       <body>
-        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" allowfullscreen allow=autoplay;fullscreen controls="0"></iframe>
+        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" allowfullscreen allow=autoplay;fullscreen controls="1"></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
         let iframe = document.querySelector('iframe');
@@ -234,7 +234,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           transparent: true,
           autoplay: ${controller.flags.autoPlay},
           speed: true,
-          controls: false,
+          controls: true,
           dnt: false,
         };
         
