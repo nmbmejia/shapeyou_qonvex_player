@@ -177,10 +177,12 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                               isFullscreen: !controller.value.isFullscreen,
                             ),
                           );
+                          widget.isFullscreenCallback(
+                              controller.value.isFullscreen);
+                        } else {
+                          print("FFAF");
                         }
                       });
-                      widget
-                          .isFullscreenCallback(controller.value.isFullscreen);
 
                       print(
                           "HEARTBEAT FULLSCREENss : ${controller.value.isFullscreen}");
