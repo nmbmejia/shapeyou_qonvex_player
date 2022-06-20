@@ -18,12 +18,15 @@ class RawVimeoPlayer extends StatefulWidget {
   VimeoPlayerController controller;
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   final ValueChanged<double>? currentSecCallback;
+  final ValueChanged<bool> isFullscreenCallback;
+
   final void Function(VimeoMetaData metaData) onEnded;
   final bool allowFullscreen;
   final bool mute;
   RawVimeoPlayer({
     this.key,
     required this.baseUrl,
+    required this.isFullscreenCallback,
     required this.onEnded,
     this.mute = false,
     required this.controller,
@@ -176,6 +179,8 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                           );
                         }
                       });
+                      widget
+                          .isFullscreenCallback(controller.value.isFullscreen);
 
                       print(
                           "HEARTBEAT FULLSCREENss : ${controller.value.isFullscreen}");
