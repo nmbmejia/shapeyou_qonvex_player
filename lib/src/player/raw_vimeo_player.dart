@@ -18,7 +18,7 @@ class RawVimeoPlayer extends StatefulWidget {
   VimeoPlayerController controller;
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   final ValueChanged<double>? currentSecCallback;
-  final ValueChanged<bool> isFullscreenCallback;
+  final ValueChanged<bool>? isFullscreenCallback;
 
   final void Function(VimeoMetaData metaData) onEnded;
   final bool allowFullscreen;
@@ -72,7 +72,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
   }
 
   // bool _fullscreenHeartbeatEnable = false;
-  int fullscreenIndex = 1;
+  int fullscreenIndex = 0;
   @override
   Widget build(BuildContext context) {
     // double pxHeight = MediaQuery.of(context).size.height;
@@ -171,19 +171,25 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                       setState(() {
                         fullscreenIndex += 1;
                         if (fullscreenIndex % 2 == 0) {
+                          // if (widget.isFullscreenCallback != null) {
+                          //   widget.isFullscreenCallback!(
+                          //       controller.value.isFullscreen);
+                          // }
                           _isFullscreen = !_isFullscreen;
                           controller.updateValue(
                             controller.value.copyWith(
                               isFullscreen: !controller.value.isFullscreen,
                             ),
                           );
-                          widget.isFullscreenCallback(
-                              controller.value.isFullscreen);
                         } else {
+                          if (widget.isFullscreenCallback != null) {
+                            widget.isFullscreenCallback!(
+                                controller.value.isFullscreen);
+                          }
                           print("FFAF");
                         }
                       });
-
+                      print("FULLSCREEN INDEX: $fullscreenIndex");
                       print(
                           "HEARTBEAT FULLSCREENss : ${controller.value.isFullscreen}");
 
