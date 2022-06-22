@@ -171,35 +171,18 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                       setState(() {
                         fullscreenIndex += 1;
                         if (fullscreenIndex % 2 == 0) {
-                          // if (widget.isFullscreenCallback != null) {
-                          //   widget.isFullscreenCallback!(
-                          //       controller.value.isFullscreen);
-                          // }
+                          if (widget.isFullscreenCallback != null) {
+                            widget.isFullscreenCallback!(
+                                controller.value.isFullscreen);
+                          }
                           _isFullscreen = !_isFullscreen;
                           controller.updateValue(
                             controller.value.copyWith(
                               isFullscreen: !controller.value.isFullscreen,
                             ),
                           );
-                        } else {
-                          if (widget.isFullscreenCallback != null) {
-                            widget.isFullscreenCallback!(
-                                controller.value.isFullscreen);
-                          }
-                          print("FFAF");
                         }
                       });
-                      print("FULLSCREEN INDEX: $fullscreenIndex");
-                      print(
-                          "HEARTBEAT FULLSCREENss : ${controller.value.isFullscreen}");
-
-                      // setState(() {
-                      //   controller.updateValue(
-                      //     controller.value.copyWith(
-                      //       isFullscreen: !controller.value.isFullscreen,
-                      //     ),
-                      //   );
-                      // });
                       break;
                     default:
                       print('default player state');
