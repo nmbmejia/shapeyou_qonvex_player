@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:qonvex_player/src/controllers/vimeo_player_controller.dart';
 import 'package:qonvex_player/src/models/vimeo_meta_data.dart';
 import 'package:qonvex_player/src/models/vimeo_player_data_callback.dart';
+import 'package:sizer/sizer.dart';
 
 // class CompletedCallback {
 //   final bool isFullscreen;
@@ -73,6 +73,8 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
 
   // bool _fullscreenHeartbeatEnable = false;
   int fullscreenIndex = 0;
+  Future<IOSNavigationResponseAction> action() async =>
+      IOSNavigationResponseAction.ALLOW;
   @override
   Widget build(BuildContext context) {
     // double pxHeight = MediaQuery.of(context).size.height;
@@ -83,17 +85,36 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       child: InAppWebView(
         // key: _key,
         initialData: InAppWebViewInitialData(
-            data: player(_width),
-            baseUrl: Uri.parse(widget.baseUrl),
-            encoding: 'utf-8',
-            mimeType: 'text/html'),
+          data: player(_width),
+          baseUrl: Uri.parse(widget.baseUrl),
+          encoding: 'utf-8',
+          mimeType: 'text/html',
+        ),
         initialOptions: InAppWebViewGroupOptions(
-            ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: false),
-            crossPlatform: InAppWebViewOptions(
-                userAgent: userAgent,
-                mediaPlaybackRequiresUserGesture: false,
-                transparentBackground: true)),
-        onWebViewCreated: (webController) {
+          ios: IOSInAppWebViewOptions(
+            allowsInlineMediaPlayback: true,
+            disallowOverScroll: true,
+            // allowingReadAccessTo: Uri.parse(widget.baseUrl),
+          ),
+          crossPlatform: InAppWebViewOptions(
+            userAgent: userAgent,
+            mediaPlaybackRequiresUserGesture: false,
+            transparentBackground: true,
+            clearCache: true,
+          ),
+        ),
+
+        onWebViewCreated: (webController) async {
+          // final CookieManager cookieManager = CookieManager.instance();
+          // html.Window().location.reload();
+          await webController.clearCache();
+          await webController.ios.reloadFromOrigin();
+          await webController.getUrl().then((print));
+          // await Future.value([
+          //   webController.ios.reloadFromOrigin(),
+          //   cookieManager.deleteAllCookies(),
+          // ]);
+          // print("CLEARING CACHE & COOKIES & RELOAD");
           controller.updateValue(
             controller.value.copyWith(webViewController: webController),
           );
@@ -220,10 +241,14 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
       </head>
       <body>
-        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&app_id=${controller.appId}&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" allowfullscreen allow=autoplay;fullscreen controls="1"></iframe>
+        <div id="player"></div>
+      
+        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allow=autoplay;fullscreen;picture-in-picture; controls="1"></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
+        
         let iframe = document.querySelector('iframe');
+        
         var options = {
           id: ${controller.initialVideoId},
           title: false,
@@ -236,7 +261,10 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
         
         var videoData = {};
         var vimPlayer = new Vimeo.Player(iframe, options);
-        
+        vimPlayer.ready().catch((e){
+          self.location.reload();
+          console.log('VIDEO ERROR ');
+        });
         vimPlayer.getVideoTitle().then(function(title) {
           videoData['title'] = title;
         });
@@ -264,7 +292,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           window.flutter_inappwebview.callHandler('StateChange', 3);
         });
         vimPlayer.on('loaded', function(id) {
-          window.location.reload();
+          self.location.reload();
           window.flutter_inappwebview.callHandler('Ready');
           Promise.all([vimPlayer.getVideoTitle(), vimPlayer.getDuration()]).then(function(values) {
             videoData['title'] = values[0];
@@ -322,6 +350,19 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
 
   String boolean({required bool value}) => value ? "'1'" : "'0'";
 
-  String get userAgent =>
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36';
+  String get userAgent {
+    if (Platform.isAndroid) {
+      return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36";
+    } else if (Platform.isIOS) {
+      final bool isPhone = SizerUtil.deviceType == DeviceType.mobile;
+      if (!isPhone) {
+        return "Mozilla/5.0 (iPad; CPU OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/107.0.5304.66 Mobile/15E148 Safari/604.1";
+      }
+      return "Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/107.0.5304.66 Mobile/15E148 Safari/604.1";
+    } else {
+      return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36";
+    }
+  }
+  // "Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/107.0.5304.66 Mobile/15E148 Safari/604.1";
+  // 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36';
 }
