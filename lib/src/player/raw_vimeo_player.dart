@@ -5,7 +5,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:qonvex_player/src/controllers/vimeo_player_controller.dart';
 import 'package:qonvex_player/src/models/vimeo_meta_data.dart';
 import 'package:qonvex_player/src/models/vimeo_player_data_callback.dart';
-import 'package:sizer/sizer.dart';
 
 // class CompletedCallback {
 //   final bool isFullscreen;
@@ -351,10 +350,9 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
   String boolean({required bool value}) => value ? "'1'" : "'0'";
 
   String get userAgent {
-    if (Platform.isAndroid) {
-      return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36";
-    } else if (Platform.isIOS) {
-      final bool isPhone = SizerUtil.deviceType == DeviceType.mobile;
+    if (Platform.isIOS) {
+      final bool isPhone = controller.deviceType == PlayerDeviceType.IPHONE;
+      // final bool isPhone = SizerUtil.deviceType == DeviceType.mobile;
       if (!isPhone) {
         return "Mozilla/5.0 (iPad; CPU OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/107.0.5304.66 Mobile/15E148 Safari/604.1";
       }

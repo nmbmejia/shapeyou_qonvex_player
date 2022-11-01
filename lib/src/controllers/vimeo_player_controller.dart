@@ -1,17 +1,23 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:qonvex_player/qonvex_player.dart';
+
+enum PlayerDeviceType { IPHONE, IPAD, OTHERS }
 
 class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
   final String initialVideoId;
   final VimeoPlayerFlags flags;
   final String securityId;
   final String appId;
+  final PlayerDeviceType deviceType;
 
   VimeoPlayerController({
     required this.initialVideoId,
     this.flags = const VimeoPlayerFlags(),
     required this.securityId,
     required this.appId,
+    required this.deviceType,
   }) : super(VimeoPlayerValue(webViewController: null));
 
   factory VimeoPlayerController.of(BuildContext context) => context

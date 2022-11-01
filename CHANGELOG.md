@@ -10,3 +10,7 @@
 -
 ## 0.0.4
 - Added platform agents
+
+
+## 0.0.5
+- removed sizer on user agents
