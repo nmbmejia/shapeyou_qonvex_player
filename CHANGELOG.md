@@ -14,3 +14,7 @@
 
 ## 0.0.5
 - removed sizer on user agents
+
+
+## 0.0.6
+-renamed type
