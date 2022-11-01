@@ -264,6 +264,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           window.flutter_inappwebview.callHandler('StateChange', 3);
         });
         vimPlayer.on('loaded', function(id) {
+          window.location.reload();
           window.flutter_inappwebview.callHandler('Ready');
           Promise.all([vimPlayer.getVideoTitle(), vimPlayer.getDuration()]).then(function(values) {
             videoData['title'] = values[0];
