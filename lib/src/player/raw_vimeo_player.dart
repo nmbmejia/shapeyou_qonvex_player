@@ -351,7 +351,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
 
   String get userAgent {
     if (Platform.isIOS) {
-      final bool isPhone = controller.deviceType == PlayerDeviceType.IPHONE;
+      final bool isPhone = controller.type == PlayerDeviceType.IPHONE;
       // final bool isPhone = SizerUtil.deviceType == DeviceType.mobile;
       if (!isPhone) {
         return "Mozilla/5.0 (iPad; CPU OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/107.0.5304.66 Mobile/15E148 Safari/604.1";
