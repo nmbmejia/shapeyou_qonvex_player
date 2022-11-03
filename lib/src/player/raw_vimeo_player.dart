@@ -107,7 +107,6 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           // final CookieManager cookieManager = CookieManager.instance();
           // html.Window().location.reload();
           await webController.clearCache();
-          await webController.ios.reloadFromOrigin();
           await webController.getUrl().then((print));
           // await Future.value([
           //   webController.ios.reloadFromOrigin(),

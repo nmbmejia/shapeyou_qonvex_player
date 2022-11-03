@@ -18,3 +18,6 @@
 
 ## 0.0.6
 -renamed type
+
+## 0.0.8
+- remove ios reload from origin
