@@ -6,11 +6,6 @@ import 'package:qonvex_player/src/controllers/vimeo_player_controller.dart';
 import 'package:qonvex_player/src/models/vimeo_meta_data.dart';
 import 'package:qonvex_player/src/models/vimeo_player_data_callback.dart';
 
-// class CompletedCallback {
-//   final bool isFullscreen;
-
-// }
-
 class RawVimeoPlayer extends StatefulWidget {
   final Key? key;
   final String baseUrl;
