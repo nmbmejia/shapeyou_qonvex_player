@@ -21,3 +21,7 @@
 
 ## 0.0.8
 - remove ios reload from origin
+
+## 1.0.0
+- first version for full player setup
+- added debug logging banner disable

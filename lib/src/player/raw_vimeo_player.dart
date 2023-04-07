@@ -15,6 +15,7 @@ class RawVimeoPlayer extends StatefulWidget {
   final Key? key;
   final String baseUrl;
   VimeoPlayerController controller;
+  final bool showDebugLogging;
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   final ValueChanged<double>? currentSecCallback;
   final ValueChanged<bool>? isFullscreenCallback;
@@ -27,6 +28,7 @@ class RawVimeoPlayer extends StatefulWidget {
     required this.baseUrl,
     required this.isFullscreenCallback,
     required this.onEnded,
+    this.showDebugLogging = true,
     this.mute = false,
     required this.controller,
     this.currentSecCallback,
@@ -255,6 +257,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           speed: true,
           controls: true,
           dnt: false,
+          debug: ${widget.showDebugLogging},
         };
         
         var videoData = {};
