@@ -127,8 +127,8 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
             ..addJavaScriptHandler(
                 handlerName: 'VideoPosition',
                 callback: (params) {
-                  // print(
-                  //     "CURRENT TIME: ${double.parse(params.first.toString())}");
+                  print(
+                      "CURRENT TIME: ${double.parse(params.first.toString())}");
                   if (widget.currentSecCallback != null) {
                     widget.currentSecCallback!(
                         double.parse(params.first.toString()));
