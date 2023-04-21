@@ -25,3 +25,6 @@
 ## 1.0.0
 - first version for full player setup
 - added debug logging banner disable
+
+## 1.0.1
+- added timeupdater

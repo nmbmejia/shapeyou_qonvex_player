@@ -307,7 +307,9 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
         vimPlayer.on('timeupdate', function(seconds) {
           window.flutter_inappwebview.callHandler('VideoPosition', seconds['seconds']);
         });
-        
+        function updateVideoPosition(position) {
+          vimPlayer.setCurrentTime(position).then(function(seconds) {});
+        }
         function sendPlayerStateChange(playerState) {
           window.flutter_inappwebview.callHandler('StateChange', playerState);
         }
