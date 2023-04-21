@@ -105,112 +105,201 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           // html.Window().location.reload();
           await webController.clearCache();
           await webController.getUrl().then((print));
-          // await Future.value([
-          //   webController.ios.reloadFromOrigin(),
-          //   cookieManager.deleteAllCookies(),
-          // ]);
-          // print("CLEARING CACHE & COOKIES & RELOAD");
           controller.updateValue(
             controller.value.copyWith(webViewController: webController),
           );
-          /* add js handlers */
-          webController
-            ..addJavaScriptHandler(
-                handlerName: 'Ready',
-                callback: (_) {
-                  print('player ready xxx');
-                  if (!controller.value.isReady) {
-                    controller
-                        .updateValue(controller.value.copyWith(isReady: true));
-                  }
-                })
-            ..addJavaScriptHandler(
-                handlerName: 'VideoPosition',
-                callback: (params) {
-                  print(
-                      "CURRENT TIME: ${double.parse(params.first.toString())}");
-                  if (widget.currentSecCallback != null) {
-                    widget.currentSecCallback!(
-                        double.parse(params.first.toString()));
-                  }
-                  controller.updateValue(controller.value.copyWith(
-                      videoPosition: double.parse(params.first.toString())));
-                })
-            ..addJavaScriptHandler(
-                handlerName: 'VideoData',
-                callback: (params) {
-                  //print('VideoData: ' + json.decode(params.first));
-                  controller.updateValue(controller.value.copyWith(
-                    videoTitle: params.first['title'].toString(),
-                    videoDuration:
-                        double.parse(params.first['duration'].toString()),
-                    videoWidth: double.parse(params.first['width'].toString()),
-                    videoHeight:
-                        double.parse(params.first['height'].toString()),
-                  ));
-                })
-            ..addJavaScriptHandler(
-                handlerName: 'StateChange',
-                callback: (params) async {
-                  switch (params.first) {
-                    case -2:
-                      controller.updateValue(
-                          controller.value.copyWith(isBuffering: true));
-                      break;
-                    case -1:
-                      controller.updateValue(controller.value
-                          .copyWith(isPlaying: false, hasEnded: true));
-                      print("HEARTBEAT FULLSCREEN END : $_isFullscreen");
-                      widget.onEnded(VimeoMetaData(
-                        videoDuration: Duration(
-                          seconds: controller.value.videoDuration?.round() ?? 0,
-                        ),
-                        videoId: controller.initialVideoId,
-                        videoTitle: controller.value.videoTitle ?? "NON",
-                        isFullscreen: _isFullscreen,
-                      ));
-                      break;
-                    case 0:
-                      controller.updateValue(controller.value
-                          .copyWith(isReady: true, isBuffering: false));
-                      break;
-                    case 1:
-                      controller.updateValue(
-                          controller.value.copyWith(isPlaying: false));
-                      break;
-                    case 2:
-                      controller.updateValue(
-                          controller.value.copyWith(isPlaying: true));
-                      break;
-                    case 3:
-                      // final bool isFullscreen = controller.value.isFullscreen;
-                      setState(() {
-                        fullscreenIndex += 1;
-                        if (fullscreenIndex % 2 == 0) {
-                          if (widget.isFullscreenCallback != null) {
-                            widget.isFullscreenCallback!(
-                                controller.value.isFullscreen);
-                          }
-                          _isFullscreen = !_isFullscreen;
-                          controller.updateValue(
-                            controller.value.copyWith(
-                              isFullscreen: !controller.value.isFullscreen,
-                            ),
-                          );
-                        }
-                      });
-                      break;
-                    default:
-                      print('default player state');
-                  }
-                  if (widget.dataCallback != null) {
-                    await Future.delayed(const Duration(milliseconds: 100));
-                    widget.dataCallback!(VimeoPlayerDataCallback(
-                      isFullscreen: controller.value.isFullscreen,
-                      isPlaying: controller.value.isPlaying,
+
+          webController.addJavaScriptHandler(
+              handlerName: 'Ready',
+              callback: (_) {
+                print('player ready !!!');
+                if (!controller.value.isReady) {
+                  controller
+                      .updateValue(controller.value.copyWith(isReady: true));
+                }
+              });
+          webController.addJavaScriptHandler(
+              handlerName: 'VideoPosition',
+              callback: (params) {
+                print("CURRENT TIME: ${params}");
+                if (widget.currentSecCallback != null) {
+                  widget.currentSecCallback!(
+                      double.parse(params.first.toString()));
+                }
+                controller.updateValue(controller.value.copyWith(
+                    videoPosition: double.parse(params.first.toString())));
+              });
+          webController.addJavaScriptHandler(
+              handlerName: 'VideoData',
+              callback: (params) {
+                //print('VideoData: ' + json.decode(params.first));
+                controller.updateValue(controller.value.copyWith(
+                  videoTitle: params.first['title'].toString(),
+                  videoDuration:
+                      double.parse(params.first['duration'].toString()),
+                  videoWidth: double.parse(params.first['width'].toString()),
+                  videoHeight: double.parse(params.first['height'].toString()),
+                ));
+              });
+          webController.addJavaScriptHandler(
+              handlerName: 'StateChange',
+              callback: (params) async {
+                switch (params.first) {
+                  case -2:
+                    controller.updateValue(
+                        controller.value.copyWith(isBuffering: true));
+                    break;
+                  case -1:
+                    controller.updateValue(controller.value
+                        .copyWith(isPlaying: false, hasEnded: true));
+                    print("HEARTBEAT FULLSCREEN END : $_isFullscreen");
+                    widget.onEnded(VimeoMetaData(
+                      videoDuration: Duration(
+                        seconds: controller.value.videoDuration?.round() ?? 0,
+                      ),
+                      videoId: controller.initialVideoId,
+                      videoTitle: controller.value.videoTitle ?? "NON",
+                      isFullscreen: _isFullscreen,
                     ));
-                  }
-                });
+                    break;
+                  case 0:
+                    controller.updateValue(controller.value
+                        .copyWith(isReady: true, isBuffering: false));
+                    break;
+                  case 1:
+                    controller.updateValue(
+                        controller.value.copyWith(isPlaying: false));
+                    break;
+                  case 2:
+                    controller.updateValue(
+                        controller.value.copyWith(isPlaying: true));
+                    break;
+                  case 3:
+                    // final bool isFullscreen = controller.value.isFullscreen;
+                    setState(() {
+                      fullscreenIndex += 1;
+                      if (fullscreenIndex % 2 == 0) {
+                        if (widget.isFullscreenCallback != null) {
+                          widget.isFullscreenCallback!(
+                              controller.value.isFullscreen);
+                        }
+                        _isFullscreen = !_isFullscreen;
+                        controller.updateValue(
+                          controller.value.copyWith(
+                            isFullscreen: !controller.value.isFullscreen,
+                          ),
+                        );
+                      }
+                    });
+                    break;
+                  default:
+                    print('default player state');
+                }
+                if (widget.dataCallback != null) {
+                  await Future.delayed(const Duration(milliseconds: 100));
+                  widget.dataCallback!(VimeoPlayerDataCallback(
+                    isFullscreen: controller.value.isFullscreen,
+                    isPlaying: controller.value.isPlaying,
+                  ));
+                }
+              });
+          /* add js handlers */
+          // webController
+          //   ..addJavaScriptHandler(
+          //       handlerName: 'Ready',
+          // callback: (_) {
+          //   print('player ready xxx');
+          //   if (!controller.value.isReady) {
+          //     controller
+          //         .updateValue(controller.value.copyWith(isReady: true));
+          //   }
+          // })
+          // ..addJavaScriptHandler(
+          //     handlerName: 'VideoPosition',
+          //     callback: (params) {
+          //       print("CURRENT TIME: ${params}");
+          //       if (widget.currentSecCallback != null) {
+          //         widget.currentSecCallback!(
+          //             double.parse(params.first.toString()));
+          //       }
+          //       controller.updateValue(controller.value.copyWith(
+          //           videoPosition: double.parse(params.first.toString())));
+          //     })
+          // ..addJavaScriptHandler(
+          //     handlerName: 'VideoData',
+          //     callback: (params) {
+          //       //print('VideoData: ' + json.decode(params.first));
+          //       controller.updateValue(controller.value.copyWith(
+          //         videoTitle: params.first['title'].toString(),
+          //         videoDuration:
+          //             double.parse(params.first['duration'].toString()),
+          //         videoWidth: double.parse(params.first['width'].toString()),
+          //         videoHeight:
+          //             double.parse(params.first['height'].toString()),
+          //       ));
+          //     })
+          // ..addJavaScriptHandler(
+          //     handlerName: 'StateChange',
+          //     callback: (params) async {
+          //       switch (params.first) {
+          //         case -2:
+          //           controller.updateValue(
+          //               controller.value.copyWith(isBuffering: true));
+          //           break;
+          //         case -1:
+          //           controller.updateValue(controller.value
+          //               .copyWith(isPlaying: false, hasEnded: true));
+          //           print("HEARTBEAT FULLSCREEN END : $_isFullscreen");
+          //           widget.onEnded(VimeoMetaData(
+          //             videoDuration: Duration(
+          //               seconds: controller.value.videoDuration?.round() ?? 0,
+          //             ),
+          //             videoId: controller.initialVideoId,
+          //             videoTitle: controller.value.videoTitle ?? "NON",
+          //             isFullscreen: _isFullscreen,
+          //           ));
+          //           break;
+          //         case 0:
+          //           controller.updateValue(controller.value
+          //               .copyWith(isReady: true, isBuffering: false));
+          //           break;
+          //         case 1:
+          //           controller.updateValue(
+          //               controller.value.copyWith(isPlaying: false));
+          //           break;
+          //         case 2:
+          //           controller.updateValue(
+          //               controller.value.copyWith(isPlaying: true));
+          //           break;
+          //         case 3:
+          //           // final bool isFullscreen = controller.value.isFullscreen;
+          //           setState(() {
+          //             fullscreenIndex += 1;
+          //             if (fullscreenIndex % 2 == 0) {
+          //               if (widget.isFullscreenCallback != null) {
+          //                 widget.isFullscreenCallback!(
+          //                     controller.value.isFullscreen);
+          //               }
+          //               _isFullscreen = !_isFullscreen;
+          //               controller.updateValue(
+          //                 controller.value.copyWith(
+          //                   isFullscreen: !controller.value.isFullscreen,
+          //                 ),
+          //               );
+          //             }
+          //           });
+          //           break;
+          //         default:
+          //           print('default player state');
+          //       }
+          //       if (widget.dataCallback != null) {
+          //         await Future.delayed(const Duration(milliseconds: 100));
+          //         widget.dataCallback!(VimeoPlayerDataCallback(
+          //           isFullscreen: controller.value.isFullscreen,
+          //           isPlaying: controller.value.isPlaying,
+          //         ));
+          //       }
+          //     });
         },
         onLoadStop: (_, __) {
           if (_isPlayerReady) {
