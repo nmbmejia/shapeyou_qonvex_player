@@ -28,3 +28,6 @@
 
 ## 1.0.1
 - added timeupdater
+
+## 1.0.4
+- added timeupdate function on player and js handler

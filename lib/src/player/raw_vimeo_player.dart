@@ -100,7 +100,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           ),
         ),
 
-        onWebViewCreated: (webController) async {
+        onWebViewCreated: (InAppWebViewController webController) async {
           // final CookieManager cookieManager = CookieManager.instance();
           // html.Window().location.reload();
           await webController.clearCache();
@@ -132,7 +132,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           webController.addJavaScriptHandler(
               handlerName: 'VideoData',
               callback: (params) {
-                //print('VideoData: ' + json.decode(params.first));
+                print('VideoData: ${params.first}');
                 controller.updateValue(controller.value.copyWith(
                   videoTitle: params.first['title'].toString(),
                   videoDuration:
@@ -140,6 +140,11 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                   videoWidth: double.parse(params.first['width'].toString()),
                   videoHeight: double.parse(params.first['height'].toString()),
                 ));
+              });
+          webController.addJavaScriptHandler(
+              handlerName: "TimeUpdate",
+              callback: (params) {
+                print("TIME :${params.first}");
               });
           webController.addJavaScriptHandler(
               handlerName: 'StateChange',
@@ -394,6 +399,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           window.flutter_inappwebview.callHandler('StateChange', -1);
         });
         vimPlayer.on('timeupdate', function(seconds) {
+          setTimeUpdated(seconds['seconds']);
           window.flutter_inappwebview.callHandler('VideoPosition', seconds['seconds']);
         });
 
@@ -401,6 +407,9 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           vimPlayer.setCurrentTime(position).then(function(seconds) {
             console.log('Video position updated to: ' + seconds);
           });
+        }
+        function setTimeUpdated(seconds) {
+          window.flutter_inappwebview.callHandler('TimeUpdate',seconds);
         }
         function sendPlayerStateChange(playerState) {
           window.flutter_inappwebview.callHandler('StateChange', playerState);
