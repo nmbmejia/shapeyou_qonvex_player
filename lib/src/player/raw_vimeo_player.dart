@@ -145,6 +145,11 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
               handlerName: "TimeUpdate",
               callback: (params) {
                 print("TIME :${params.first}");
+                if (widget.currentSecCallback != null) {
+                  widget.currentSecCallback!(double.parse(
+                    params.first.toString(),
+                  ));
+                }
               });
           webController.addJavaScriptHandler(
               handlerName: 'StateChange',
@@ -332,7 +337,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <body>
         <div id="player"></div>
       
-        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allow=autoplay;fullscreen;picture-in-picture; controls="1"></iframe>
+        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&muted=${widget.mute ? 1 : 0}&dnt=1&playsinline=1&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allow=autoplay;fullscreen;picture-in-picture; controls="1"></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
         
@@ -345,7 +350,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           autoplay: ${controller.flags.autoPlay},
           speed: true,
           controls: true,
-          dnt: false,
+          dnt: true,
           debug: ${widget.showDebugLogging},
         };
         
@@ -400,7 +405,6 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
         });
         vimPlayer.on('timeupdate', function(seconds) {
           setTimeUpdated(seconds['seconds']);
-          window.flutter_inappwebview.callHandler('VideoPosition', seconds['seconds']);
         });
 
         function updateVideoPosition(position) {
