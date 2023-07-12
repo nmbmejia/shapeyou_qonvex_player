@@ -34,3 +34,6 @@
 
 ## 1.0.6
 - remove dnt
+
+## 1.0.7
+- added autopause to disable simultaneous playback

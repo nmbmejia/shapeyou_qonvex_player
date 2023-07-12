@@ -352,10 +352,12 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           controls: true,
           dnt: false,
           pip: true,
+          autopause: true,
           quality: auto,
           playsinline: false,
           width: 100%,
           height: 100%,
+          autopip: 
           muted: ${widget.mute ? 1 : 0},
           debug: ${widget.showDebugLogging},
         };
