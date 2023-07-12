@@ -1,6 +1,6 @@
 name: qonvex_player
 description: A new Flutter package project.
-version: 1.0.5
+version: 1.0.6
 homepage: https://github.com/ThuAbLKA/flutter-vimeo-player/blob/development/pubspec.yaml
 
 environment:
@@ -8,7 +8,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  async: ^2.10.0
+  async: ^2.11.0
   flutter:
     sdk: flutter
   flutter_inappwebview: ^5.7.2+3
