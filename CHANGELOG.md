@@ -37,3 +37,6 @@
 
 ## 1.0.7
 - added autopause to disable simultaneous playback
+
+## 1.2.2
+- downgraded inappwebview package
