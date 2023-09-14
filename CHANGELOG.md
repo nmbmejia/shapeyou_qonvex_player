@@ -1,3 +1,7 @@
+## 1.2.4
+* added loop and showControls property on player's optional properties
+
+
 ## 0.0.1
 
 * TODO: Describe initial release.

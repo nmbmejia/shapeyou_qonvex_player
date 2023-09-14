@@ -6,6 +6,7 @@ import 'package:qonvex_player/src/controllers/vimeo_player_controller.dart';
 import 'package:qonvex_player/src/models/vimeo_meta_data.dart';
 import 'package:qonvex_player/src/models/vimeo_player_data_callback.dart';
 
+// ignore: must_be_immutable
 class RawVimeoPlayer extends StatefulWidget {
   final Key? key;
   final String baseUrl;
@@ -14,7 +15,8 @@ class RawVimeoPlayer extends StatefulWidget {
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   final ValueChanged<double>? currentSecCallback;
   final ValueChanged<bool>? isFullscreenCallback;
-
+  final bool showControls;
+  final bool loop;
   final void Function(VimeoMetaData metaData) onEnded;
   final bool allowFullscreen;
   final bool mute;
@@ -28,7 +30,9 @@ class RawVimeoPlayer extends StatefulWidget {
     required this.controller,
     this.currentSecCallback,
     this.allowFullscreen = true,
+    this.showControls = true,
     this.dataCallback,
+    this.loop = false,
   }) : super(key: key);
 
   @override
@@ -357,7 +361,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <body>
         <div id="player"></div>
       
-        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allow=autoplay;fullscreen;picture-in-picture; controls="1"></iframe>
+        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&loop=${widget.loop}&autoplay=${controller.flags.autoPlay}&quality=auto&controls=${widget.showControls}" width="100%" height="100%"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allow=autoplay;fullscreen;picture-in-picture;></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
         
@@ -368,10 +372,11 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           title: false,
           transparent: true,
           autoplay: ${controller.flags.autoPlay},
-          speed: true,
-          controls: true,
+          speed: ${widget.showControls},
+          controls: ${widget.showControls},
           dnt: false,
           debug: ${widget.showDebugLogging},
+          loop: ${widget.loop}
         };
         
         var videoData = {};
