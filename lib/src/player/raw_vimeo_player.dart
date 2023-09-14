@@ -361,7 +361,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
       <body>
         <div id="player"></div>
       
-        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&loop=${widget.loop}&autoplay=${controller.flags.autoPlay}&quality=auto&controls=${widget.showControls}" width="100%" height="100%"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allow=autoplay;fullscreen;picture-in-picture;></iframe>
+        <iframe src="https://player.vimeo.com/video/${controller.initialVideoId}?h=${controller.securityId}&app_id=${controller.appId}&muted=${widget.mute ? 1 : 0}&dnt=0&playsinline=1&loop=${widget.loop}&autoplay=${controller.flags.autoPlay}&quality=auto" width="100%" height="100%"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allow=autoplay;fullscreen;picture-in-picture; controls="${widget.showControls ? 1 : 0}"></iframe>
         <script src="https://player.vimeo.com/api/player.js"></script>
         <script>
         
