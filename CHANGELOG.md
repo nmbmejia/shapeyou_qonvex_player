@@ -1,3 +1,6 @@
+## 1.2.8
+* Fix player event listeners
+
 ## 1.2.4
 * added loop and showControls property on player's optional properties
 

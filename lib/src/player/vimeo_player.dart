@@ -174,7 +174,6 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
               showDebugLogging: widget.showDebugLogging,
               isFullscreenCallback: widget.isFullscreenCallback,
               mute: widget.isMuted,
-              allowFullscreen: widget.allowFullscreen,
               key: widget.key,
               dataCallback: widget.dataCallback,
               currentSecCallback: widget.currentSecCallback,
