@@ -1,3 +1,6 @@
+## 1.3.0
+* migrated and updated to latest version of flutter_inappwebview
+
 ## 1.2.8
 * Fix player event listeners
 

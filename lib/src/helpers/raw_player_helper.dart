@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class RawPlayerHelper {
+mixin class RawPlayerHelper {
   String userAgent(bool isIphone) {
     if (Platform.isIOS) {
       // final bool isPhone = controller.type == PlayerDeviceType.IPHONE;

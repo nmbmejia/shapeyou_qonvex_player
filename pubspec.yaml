@@ -1,22 +1,22 @@
 name: qonvex_player
-description: A new Flutter package project.
-version: 1.2.8
+description: A Vimeo player that accepts hash and white listed domains
+version: 1.3.0
 homepage: https://github.com/ThuAbLKA/flutter-vimeo-player/blob/development/pubspec.yaml
 
 environment:
-  sdk: ">=2.18.2 <3.0.0"
+  sdk: ">=3.1.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   async: ^2.11.0
   flutter:
     sdk: flutter
-  flutter_inappwebview: ^5.3.2
+  flutter_inappwebview: ^5.7.2+3
   # positioned_tap_detector_2: ^1.0.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.3
 
 flutter:
