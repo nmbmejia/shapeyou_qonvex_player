@@ -91,12 +91,12 @@
 //         function sendVideoData(videoData) {
 //           window.flutter_inappwebview.callHandler('VideoData', videoData);
 //         }
-//         function play() {
-//           vimPlayer.play();
-//         }
-//         function pause() {
-//           vimPlayer.pause();
-//         }
+        // function play() {
+        //   vimPlayer.play();
+        // }
+        // function pause() {
+        //   vimPlayer.pause();
+        // }
 //         function seekTo(delta) {
 //           vimPlayer.getCurrentTime().then(function(seconds) {
 //             console.log('delta: ' + (delta));

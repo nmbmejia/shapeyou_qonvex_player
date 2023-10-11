@@ -33,13 +33,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final VimeoPlayerController _controller;
+  VimeoPlayerController? _controller;
   @override
   void initState() {
     _controller = VimeoPlayerController(
-      initialVideoId: "645165444",
+      initialVideoId: "871762134",
       appId: "122963",
-      securityId: "853f4fa0eb",
+      securityId: "871762134",
       flags: const VimeoPlayerFlags(
         autoPlay: true,
       ),
@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -65,19 +65,21 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: QonvexVimeoPlayer(
-          showDebugLogging: false,
-          isFullscreenCallback: (b) {},
-          isMuted: true,
-          allowFullscreen: true,
-          loop: true,
-          showControl: false,
-          currentSecCallback: (double s) {},
-          controller: _controller,
-          url: '',
-          isCompleted: (b) async {},
-          onReady: () {},
-        ),
+        child: _controller == null
+            ? const CircularProgressIndicator.adaptive()
+            : QonvexVimeoPlayer(
+                showDebugLogging: false,
+                isFullscreenCallback: (b) {},
+                isMuted: true,
+                allowFullscreen: true,
+                loop: true,
+                showControl: false,
+                currentSecCallback: (double s) {},
+                controller: _controller!,
+                url: '',
+                isCompleted: (b) async {},
+                onReady: () {},
+              ),
       ),
     );
   }

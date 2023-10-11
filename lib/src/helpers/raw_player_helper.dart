@@ -14,14 +14,14 @@ mixin class RawPlayerHelper {
     }
   }
 
-  String player({
-    required bool loop,
-    required bool showControl,
-    required bool autoPlay,
-    required String vimeoId,
-    required String hash,
-    required bool isMuted,
-  }) =>
+  String player(
+          {required bool loop,
+          required bool showControl,
+          required bool autoPlay,
+          required String vimeoId,
+          required String hash,
+          required bool isMuted,
+          bool isPortrait = false}) =>
       """
  <html>
 <style>
@@ -63,8 +63,8 @@ mixin class RawPlayerHelper {
             <iframe src="https://player.vimeo.com/video/$vimeoId?h=$hash&responsive=1&muted=${isMuted ? 1 : 0}&autoplay=${autoPlay ? 1 : 0}&controls=${showControl ? 1 : 0}&loop=${loop ? 1 : 0}&speed=${showControl ? 1 : 0}" 
                 width="100%" 
                 height="100%" 
-                frameborder="0" 
-                allowfullscreen>
+                frameborder="0"
+                webkitallowfullscreen mozallowfullscreen allowfullscreen allow=autoplay;fullscreen>
             </iframe>
             <!-- Play/pause overlay -->
             ${showControl ? "" : '<div class="play-pause-overlay" onclick="togglePlayPause()"></div>'}
@@ -91,6 +91,12 @@ mixin class RawPlayerHelper {
         player.on('timeupdate', function(data) {
           window.flutter_inappwebview.callHandler('videoPosition', data);
         });
+        function play() {
+          player.play();
+        }
+        function pause() {
+          player.pause();
+        }
       </script>
 </body>
 </html>
