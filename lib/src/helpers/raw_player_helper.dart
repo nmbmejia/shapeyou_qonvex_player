@@ -21,6 +21,8 @@ mixin class RawPlayerHelper {
           required String vimeoId,
           required String hash,
           required bool isMuted,
+          bool isBackground = false,
+          bool autopause = true,
           bool isPortrait = false}) =>
       """
  <html>
@@ -34,8 +36,7 @@ mixin class RawPlayerHelper {
     .video-container {
             position: relative;
             width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio (change as needed) */
+            height: 100%;
         }
 
         .video-container iframe {
@@ -60,7 +61,7 @@ mixin class RawPlayerHelper {
 
 <body style="margin:0;">
           <div class ="video-container">
-            <iframe src="https://player.vimeo.com/video/$vimeoId?h=$hash&responsive=1&muted=${isMuted ? 1 : 0}&autoplay=${autoPlay ? 1 : 0}&controls=${showControl ? 1 : 0}&loop=${loop ? 1 : 0}&speed=1" 
+            <iframe src="https://player.vimeo.com/video/$vimeoId?h=$hash&responsive=1&muted=${isMuted ? 1 : 0}&autoplay=${autoPlay ? 1 : 0}&controls=${showControl ? 1 : 0}&loop=${loop ? 1 : 0}&speed=1&autopause=${autopause ? 1 : 0}&background=${isBackground ? 1 : 0}" 
                 width="100%" 
                 height="100%" 
                 frameborder="0"

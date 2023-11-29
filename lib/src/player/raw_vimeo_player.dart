@@ -21,6 +21,9 @@ class RawVimeoPlayer extends StatefulWidget {
   final bool loop;
   final void Function(VimeoMetaData metaData) onEnded;
   final bool mute;
+  final bool playInBackground;
+  final bool
+      allowAutoPause; // autopause player kun mayda current na nag plaplay
   RawVimeoPlayer({
     this.key,
     required this.baseUrl,
@@ -33,6 +36,8 @@ class RawVimeoPlayer extends StatefulWidget {
     this.showControls = true,
     this.dataCallback,
     this.loop = false,
+    this.allowAutoPause = true,
+    this.playInBackground = false,
   }) : super(key: key);
 
   @override
@@ -106,6 +111,8 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
             vimeoId: widget.controller.initialVideoId,
             hash: widget.controller.securityId,
             isMuted: widget.mute,
+            autopause: widget.allowAutoPause,
+            isBackground: widget.playInBackground,
           ),
           baseUrl: Uri.parse(widget.baseUrl),
           encoding: 'utf-8',

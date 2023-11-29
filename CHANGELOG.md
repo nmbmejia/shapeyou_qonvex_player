@@ -1,3 +1,8 @@
+## 1.3.6
+* Additional Settings/Params
+    - Add enable background video
+    - add autopause controlability
+
 ## 1.3.0
 * migrated and updated to latest version of flutter_inappwebview
 
