@@ -135,7 +135,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           ),
         ),
         onLoadStart: (controller, url) {
-          print("LOAD START");
+          // print("LOAD START");
         },
         onEnterFullscreen: (f) {
           print("IN FULLSCREEN");

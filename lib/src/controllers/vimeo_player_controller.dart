@@ -33,7 +33,8 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
 
   void play() => _callMethod('play()');
   void pause() => _callMethod('pause()');
-  
+  void mute() => _callMethod('mute()');
+  void unmute() => _callMethod('unmute()');
   void seekTo(double delta) => _callMethod('seekTo($delta)');
   void reset() => _callMethod('reset()');
   // bool get isFullscreen => _isFullscreen;
