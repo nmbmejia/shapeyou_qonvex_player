@@ -52,20 +52,20 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
   bool _isPlayerReady = false;
   bool _isFullscreen = false;
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  void _loadJavaScript() async {
-    const String script = '''
-      var player = new Vimeo.Player(document.querySelector('iframe'));
-      player.on('ended', function() {
-        // Handle video end event here
-        window.flutter_inappwebview.callHandler('onVideoEnd', 'Video ended');
-      });
-      player.on('loaded', function(id) {
-        window.flutter_inappwebview.callHandler('onLoad', '');
-      });
-    ''';
+  // void _loadJavaScript() async {
+  //   const String script = '''
+  //     var player = new Vimeo.Player(document.querySelector('iframe'));
+  //     player.on('ended', function() {
+  //       // Handle video end event here
+  //       window.flutter_inappwebview.callHandler('onVideoEnd', 'Video ended');
+  //     });
+  //     player.on('loaded', function(id) {
+  //       window.flutter_inappwebview.callHandler('onLoad', '');
+  //     });
+  //   ''';
 
-    await _webViewController.evaluateJavascript(source: script);
-  }
+  //   await _webViewController.evaluateJavascript(source: script);
+  // }
 
   @override
   void initState() {
@@ -162,7 +162,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           _webViewController = webController;
 
           if (mounted) setState(() {});
-          _loadJavaScript();
+          // _loadJavaScript();
           await webController.clearCache();
           controller.updateValue(
             controller.value.copyWith(webViewController: webController),
