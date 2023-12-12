@@ -26,6 +26,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
   final ValueChanged<double>? currentSecCallback;
   final VoidCallback? onReady;
   final ValueChanged<bool>? isFullscreenCallback;
+  final ValueChanged<bool>? onControllerStateCallback;
   final bool showDebugLogging,
       showControl,
       loop,
@@ -34,6 +35,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
 
   QonvexVimeoPlayer(
       {this.key,
+      this.onControllerStateCallback,
       required this.controller,
       this.currentSecCallback,
       this.allowFullscreen = true,
@@ -175,6 +177,7 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
           child: AspectRatio(
             aspectRatio: _aspectRatio,
             child: RawVimeoPlayer(
+              onControllerStateCallback: widget.onControllerStateCallback,
               showControls: widget.showControl,
               loop: widget.loop,
               showDebugLogging: widget.showDebugLogging,

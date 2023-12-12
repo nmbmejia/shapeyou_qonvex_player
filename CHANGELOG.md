@@ -1,3 +1,6 @@
+## 1.3.7
+* Added controller state callback
+
 ## 1.3.6
 * Additional Settings/Params
     - Add enable background video

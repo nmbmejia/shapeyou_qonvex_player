@@ -11,7 +11,7 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
   final String securityId;
   final String appId;
   final PlayerDeviceType type;
-
+  static ValueChanged<bool>? _controllerStateCallback;
   VimeoPlayerController({
     required this.initialVideoId,
     this.flags = const VimeoPlayerFlags(),
@@ -19,6 +19,10 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
     required this.appId,
     required this.type,
   }) : super(VimeoPlayerValue(webViewController: null));
+  ValueChanged<bool>? get controllerStateCallback => _controllerStateCallback;
+  set controllerStateCallback(Function(bool)? b) {
+    _controllerStateCallback = b;
+  }
 
   factory VimeoPlayerController.of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<InheritedVimeoPlayer>()!
@@ -40,10 +44,14 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
   // bool get isFullscreen => _isFullscreen;
   // set isFullscreen(bool t) => _isFullscreen = t;
   _callMethod(String methodString) {
+    if (controllerStateCallback != null) {
+      controllerStateCallback!(value.isReady);
+    }
     if (value.isReady) {
       value.webViewController?.evaluateJavascript(source: methodString);
     } else {
       print('The controller is not ready for method calls.');
+      throw ErrorDescription("The controller is not ready for method calls.");
     }
   }
 }
