@@ -193,8 +193,6 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
               playInBackground: widget.playInBackground,
               allowAutoPause: widget.allowAutopause,
               onEnded: (VimeoMetaData metadata) {
-                print(
-                    "PLAYER ON END FULLSCREEN VALUE: ${metadata.isFullscreen}");
                 widget.isCompleted(metadata.isFullscreen);
                 controller.reset();
               },

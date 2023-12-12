@@ -128,7 +128,9 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           android: AndroidInAppWebViewOptions(
             useHybridComposition: true,
           ),
-          ios: IOSInAppWebViewOptions(),
+          ios: IOSInAppWebViewOptions(
+            allowsInlineMediaPlayback: true,
+          ),
           crossPlatform: InAppWebViewOptions(
             userAgent: userAgent(controller.type == PlayerDeviceType.IPHONE),
             mediaPlaybackRequiresUserGesture: false,
