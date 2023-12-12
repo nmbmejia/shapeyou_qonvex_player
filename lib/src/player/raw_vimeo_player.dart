@@ -17,7 +17,7 @@ class RawVimeoPlayer extends StatefulWidget {
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   final ValueChanged<double>? currentSecCallback;
   final ValueChanged<bool>? isFullscreenCallback;
-  final ValueChanged<bool>? onControllerStateCallback;
+  final VoidCallback? onControllerStateCallback;
   final bool showControls;
   final bool loop;
   final void Function(VimeoMetaData metaData) onEnded;

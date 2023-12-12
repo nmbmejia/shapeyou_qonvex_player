@@ -102,6 +102,9 @@ mixin class RawPlayerHelper {
         function play() {
           player.play();
         }
+        function initialize(){
+          //JUST TO INITIALIZE THE [_callMethod] function
+        }
         function pause() {
           player.pause();
         }
