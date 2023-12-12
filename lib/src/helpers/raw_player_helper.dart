@@ -101,10 +101,11 @@ mixin class RawPlayerHelper {
 
         function play() {
           player.play();
-          unmute();
+           player.setVolume(1);
         }
         function initialize(){
           //JUST TO INITIALIZE THE [_callMethod] function
+          player.getVideoId();
         }
         function pause() {
           player.pause();

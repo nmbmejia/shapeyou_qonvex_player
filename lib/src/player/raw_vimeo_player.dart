@@ -18,6 +18,7 @@ class RawVimeoPlayer extends StatefulWidget {
   final ValueChanged<double>? currentSecCallback;
   final ValueChanged<bool>? isFullscreenCallback;
   final VoidCallback? onControllerStateCallback;
+  final VoidCallback? onLoadPlayer;
   final bool showControls;
   final bool loop;
   final void Function(VimeoMetaData metaData) onEnded;
@@ -32,6 +33,7 @@ class RawVimeoPlayer extends StatefulWidget {
     required this.onEnded,
     this.showDebugLogging = true,
     this.onControllerStateCallback,
+    this.onLoadPlayer,
     this.mute = false,
     required this.controller,
     this.currentSecCallback,
@@ -126,10 +128,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
           android: AndroidInAppWebViewOptions(
             useHybridComposition: true,
           ),
-          ios: IOSInAppWebViewOptions(
-            allowsInlineMediaPlayback: true,
-            disallowOverScroll: true,
-          ),
+          ios: IOSInAppWebViewOptions(),
           crossPlatform: InAppWebViewOptions(
             userAgent: userAgent(controller.type == PlayerDeviceType.IPHONE),
             mediaPlaybackRequiresUserGesture: false,
@@ -186,8 +185,12 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                 handlerName: "onLoad",
                 callback: (_) {
                   if (!controller.value.isReady) {
-                    controller
-                        .updateValue(controller.value.copyWith(isReady: true));
+                    controller.updateValue(
+                      controller.value.copyWith(isReady: true),
+                    );
+                  }
+                  if (widget.onLoadPlayer != null) {
+                    widget.onLoadPlayer!();
                   }
                 })
             ..addJavaScriptHandler(
