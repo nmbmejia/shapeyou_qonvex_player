@@ -1,5 +1,5 @@
 name: qonvex_player
-description: A Vimeo player that accepts hash and white listed domains
+description: A Vimeo player that accepts hash and white listed domains, modified to give developers complete control including error handling
 version: 1.3.7
 homepage: https://github.com/ThuAbLKA/flutter-vimeo-player/blob/development/pubspec.yaml
 
