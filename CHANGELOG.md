@@ -1,6 +1,7 @@
 ## 1.3.7
 * Added controller state callback
     - added initialize on controller
+    - added unmute when fn play is called
 
 ## 1.3.6
 * Additional Settings/Params

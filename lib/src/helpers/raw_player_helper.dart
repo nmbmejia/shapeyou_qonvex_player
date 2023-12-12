@@ -101,6 +101,7 @@ mixin class RawPlayerHelper {
 
         function play() {
           player.play();
+          unmute();
         }
         function initialize(){
           //JUST TO INITIALIZE THE [_callMethod] function
