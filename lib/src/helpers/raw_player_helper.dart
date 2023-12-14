@@ -93,7 +93,7 @@ mixin class RawPlayerHelper {
           window.flutter_inappwebview.callHandler('videoPosition', data);
         });
         player.on('play', function(){
-          window.flutter_inappwebview.callHandler('onPlay', data);
+          window.flutter_inappwebview.callHandler('onPlay', []);
         });
         function mute(){
           player.setVolume(0);
