@@ -1,3 +1,6 @@
+## 1.3.8
+* Added on play listener
+
 ## 1.3.7
 * Added controller state callback
     - added initialize on controller

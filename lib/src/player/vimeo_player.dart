@@ -14,6 +14,7 @@ import 'package:qonvex_player/src/player/raw_vimeo_player.dart';
 class QonvexVimeoPlayer extends StatefulWidget {
   final Key? key;
   VimeoPlayerController controller;
+  final VoidCallback? onPlayCallback;
   final double? height;
   final double? width;
   final double aspectRatio;
@@ -45,6 +46,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
       this.width,
       this.isMuted = false,
       required this.url,
+      this.onPlayCallback,
       this.showDebugLogging = true,
       this.height,
       this.aspectRatio = 16 / 9,
@@ -179,6 +181,7 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
           child: AspectRatio(
             aspectRatio: _aspectRatio,
             child: RawVimeoPlayer(
+              onPlayCallback: widget.onPlayCallback,
               onLoadPlayer: widget.onLoad,
               onControllerStateCallback: widget.onControllerStateCallback,
               showControls: widget.showControl,
