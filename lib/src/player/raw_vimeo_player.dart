@@ -220,7 +220,11 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
             )
             ..addJavaScriptHandler(
               handlerName: 'onReady',
-              callback: (_) {},
+              callback: (_) {
+                if (widget.onPlayerReady != null) {
+                  widget.onPlayerReady!();
+                }
+              },
             );
         },
       ),
