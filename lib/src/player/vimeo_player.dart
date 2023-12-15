@@ -18,6 +18,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
   final double? height;
   final double? width;
   final double aspectRatio;
+  final bool isControllerDismissable;
   final bool allowFullscreen;
   final String url;
   final bool isMuted;
@@ -44,6 +45,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
       this.allowFullscreen = true,
       this.isFullscreenCallback,
       this.width,
+      this.isControllerDismissable = true,
       this.isMuted = false,
       required this.url,
       this.onPlayCallback,
@@ -156,8 +158,12 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
 
   @override
   void dispose() {
-    controller.removeListener(listener);
-    controller.dispose();
+    if (widget.isControllerDismissable) {
+      controller.removeListener(listener);
+      controller.dispose();
+    } else {
+      controller.pause();
+    }
     super.dispose();
   }
 
