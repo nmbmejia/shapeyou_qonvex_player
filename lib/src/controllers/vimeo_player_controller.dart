@@ -34,7 +34,6 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
       updateValue(value.copyWith(isFullscreen: true));
 
   void reload() => value.webViewController?.reload();
-  void initialize() => _callMethod('initialize()');
   void play() => _callMethod('play()');
   void pause() => _callMethod('pause()');
   void mute() => _callMethod('mute()');
@@ -49,12 +48,10 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
     // }
     if (value.isReady) {
       value.webViewController?.evaluateJavascript(source: methodString);
-      if (controllerStateCallback == null) return;
     } else {
       print('The controller is not ready for method calls.');
       throw ErrorDescription("The controller is not ready for method calls.");
     }
-    controllerStateCallback!(value.isReady);
   }
 }
 
