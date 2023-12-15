@@ -29,7 +29,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
   final VoidCallback? onReady;
   final VoidCallback? onLoad;
   final ValueChanged<bool>? isFullscreenCallback;
-  final VoidCallback? onControllerStateCallback;
+  final ValueChanged<bool>? onControllerStateCallback;
   final bool showDebugLogging,
       showControl,
       loop,

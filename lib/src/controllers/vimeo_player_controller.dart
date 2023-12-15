@@ -11,7 +11,7 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
   final String securityId;
   final String appId;
   final PlayerDeviceType type;
-  static VoidCallback? _controllerStateCallback;
+  static ValueChanged<bool>? _controllerStateCallback;
   VimeoPlayerController({
     required this.initialVideoId,
     this.flags = const VimeoPlayerFlags(),
@@ -19,8 +19,8 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
     required this.appId,
     required this.type,
   }) : super(VimeoPlayerValue(webViewController: null));
-  VoidCallback? get controllerStateCallback => _controllerStateCallback;
-  set controllerStateCallback(VoidCallback? b) {
+  ValueChanged<bool>? get controllerStateCallback => _controllerStateCallback;
+  set controllerStateCallback(ValueChanged<bool>? b) {
     _controllerStateCallback = b;
   }
 
@@ -50,11 +50,11 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
     if (value.isReady) {
       value.webViewController?.evaluateJavascript(source: methodString);
       if (controllerStateCallback == null) return;
-      controllerStateCallback!();
     } else {
       print('The controller is not ready for method calls.');
       throw ErrorDescription("The controller is not ready for method calls.");
     }
+    controllerStateCallback!(value.isReady);
   }
 }
 

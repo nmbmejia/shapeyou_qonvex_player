@@ -101,6 +101,9 @@ mixin class RawPlayerHelper {
         function unmute(){
           player.setVolume(1);
         }
+        player.ready().then(function() {
+          window.flutter_inappwebview.callHandler('onReady', []);
+        });
 
         function play() {
           player.play();

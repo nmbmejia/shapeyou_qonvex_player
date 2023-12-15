@@ -17,9 +17,10 @@ class RawVimeoPlayer extends StatefulWidget {
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   final ValueChanged<double>? currentSecCallback;
   final ValueChanged<bool>? isFullscreenCallback;
-  final VoidCallback? onControllerStateCallback;
+  final ValueChanged<bool>? onControllerStateCallback;
   final VoidCallback? onLoadPlayer;
   final VoidCallback? onPlayCallback;
+  final VoidCallback? onPlayerReady;
   final bool showControls;
   final bool loop;
   final void Function(VimeoMetaData metaData) onEnded;
@@ -37,6 +38,7 @@ class RawVimeoPlayer extends StatefulWidget {
     this.onControllerStateCallback,
     this.onLoadPlayer,
     this.mute = false,
+    this.onPlayerReady,
     required this.controller,
     this.currentSecCallback,
     this.showControls = true,
@@ -215,6 +217,10 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                   widget.onPlayCallback!();
                 }
               },
+            )
+            ..addJavaScriptHandler(
+              handlerName: 'onReady',
+              callback: (_) {},
             );
         },
       ),
