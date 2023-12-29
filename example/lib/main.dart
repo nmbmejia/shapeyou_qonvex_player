@@ -42,6 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
       securityId: "871762134",
       flags: const VimeoPlayerFlags(
         autoPlay: true,
+        autoInitialize: true,
+        loop: true,
+        controls: false,
       ),
       type: Platform.isAndroid
           ? PlayerDeviceType.OTHERS
@@ -59,28 +62,48 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      //   title: Text(widget.title),
+      // ),
       body: Center(
-        child: _controller == null
-            ? const CircularProgressIndicator.adaptive()
-            : QonvexVimeoPlayer(
-                showDebugLogging: false,
-                isFullscreenCallback: (b) {},
-                isMuted: true,
-                allowFullscreen: true,
-                loop: true,
-                showControl: false,
-                currentSecCallback: (double s) {},
-                controller: _controller!,
-                url: '',
-                isCompleted: (b) async {},
-                onReady: () {},
-              ),
-      ),
+          child: _controller == null
+              ? const CircularProgressIndicator.adaptive()
+              : SizedBox(
+                  height: size.height,
+                  width: size.width,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      physics: const PageScrollPhysics(),
+                      child: Column(
+                        children: List.generate(
+                          20,
+                          (index) => SizedBox(
+                            height: size.height,
+                            width: size.width,
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: QonvexVimeoPlayer(
+                                height: size.height,
+                                width: size.width,
+                                showDebugLogging: false,
+                                isFullscreenCallback: (b) {},
+                                allowFullscreen: true,
+                                currentSecCallback: (double s) {},
+                                controller: _controller!,
+                                url: 'https://back.shapeyou.fr',
+                                isCompleted: (b) async {},
+                                onReady: () {},
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )),
     );
   }
 }

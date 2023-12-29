@@ -21,48 +21,35 @@ class QonvexVimeoPlayer extends StatefulWidget {
   final bool isControllerDismissable;
   final bool allowFullscreen;
   final String url;
-  final bool isMuted;
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   int? skipDuration;
   final ValueChanged<bool> isCompleted;
   final ValueChanged<double>? currentSecCallback;
-  final VoidCallback? onReady;
-  final VoidCallback? onLoad;
-  final VoidCallback? onPlayerReady;
-  final ValueChanged<bool>? isFullscreenCallback;
-  final ValueChanged<bool>? onControllerStateCallback;
-  final bool showDebugLogging,
-      showControl,
-      loop,
-      playInBackground,
-      allowAutopause;
+  final VoidCallback? onReady, onLoad, onPlayerReady;
+  final ValueChanged<bool>? onControllerStateCallback, isFullscreenCallback;
+  final bool showDebugLogging;
 
-  QonvexVimeoPlayer(
-      {this.key,
-      this.onControllerStateCallback,
-      this.onLoad,
-      required this.controller,
-      this.onPlayerReady,
-      this.currentSecCallback,
-      this.allowFullscreen = true,
-      this.isFullscreenCallback,
-      this.width,
-      this.isControllerDismissable = true,
-      this.isMuted = false,
-      required this.url,
-      this.onPlayCallback,
-      this.showDebugLogging = true,
-      this.height,
-      this.aspectRatio = 16 / 9,
-      this.skipDuration = 5,
-      this.dataCallback,
-      required this.isCompleted,
-      this.onReady,
-      this.loop = false,
-      this.playInBackground = false,
-      this.allowAutopause = true,
-      this.showControl = true})
-      : super(key: key);
+  QonvexVimeoPlayer({
+    this.key,
+    this.onControllerStateCallback,
+    this.onLoad,
+    required this.controller,
+    this.onPlayerReady,
+    this.currentSecCallback,
+    this.allowFullscreen = true,
+    this.isFullscreenCallback,
+    this.width,
+    this.isControllerDismissable = true,
+    required this.url,
+    this.onPlayCallback,
+    this.showDebugLogging = true,
+    this.height,
+    this.aspectRatio = 16 / 9,
+    this.skipDuration = 5,
+    this.dataCallback,
+    required this.isCompleted,
+    this.onReady,
+  }) : super(key: key);
 
   @override
   _QonvexVimeoPlayerState createState() => _QonvexVimeoPlayerState();
@@ -192,18 +179,13 @@ class _QonvexVimeoPlayerState extends State<QonvexVimeoPlayer>
               onPlayCallback: widget.onPlayCallback,
               onLoadPlayer: widget.onLoad,
               onControllerStateCallback: widget.onControllerStateCallback,
-              showControls: widget.showControl,
-              loop: widget.loop,
               onPlayerReady: widget.onPlayerReady,
               showDebugLogging: widget.showDebugLogging,
               isFullscreenCallback: widget.isFullscreenCallback,
-              mute: widget.isMuted,
               key: widget.key,
               dataCallback: widget.dataCallback,
               currentSecCallback: widget.currentSecCallback,
               controller: widget.controller,
-              playInBackground: widget.playInBackground,
-              allowAutoPause: widget.allowAutopause,
               onEnded: (VimeoMetaData metadata) {
                 widget.isCompleted(metadata.isFullscreen);
                 controller.reset();

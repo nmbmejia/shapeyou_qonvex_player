@@ -1,3 +1,8 @@
+## 1.3.9
+* removed some parameters
+* added the removed parameters to controller flag
+* added preloading onPlayerReady
+
 ## 1.3.8
 * Added on play listener
 

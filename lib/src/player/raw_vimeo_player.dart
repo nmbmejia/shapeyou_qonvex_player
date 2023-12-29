@@ -12,7 +12,7 @@ import 'package:qonvex_player/src/models/vimeo_player_data_callback.dart';
 class RawVimeoPlayer extends StatefulWidget {
   final Key? key;
   final String baseUrl;
-  VimeoPlayerController controller;
+  final VimeoPlayerController controller;
   final bool showDebugLogging;
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   final ValueChanged<double>? currentSecCallback;
@@ -21,14 +21,12 @@ class RawVimeoPlayer extends StatefulWidget {
   final VoidCallback? onLoadPlayer;
   final VoidCallback? onPlayCallback;
   final VoidCallback? onPlayerReady;
-  final bool showControls;
-  final bool loop;
   final void Function(VimeoMetaData metaData) onEnded;
-  final bool mute;
-  final bool playInBackground;
-  final bool
-      allowAutoPause; // autopause player kun mayda current na nag plaplay
-  RawVimeoPlayer({
+  // final bool mute;
+  // final bool playInBackground;
+  // final bool
+  //     allowAutoPause; // autopause player kun mayda current na nag plaplay
+  const RawVimeoPlayer({
     this.key,
     required this.baseUrl,
     this.onPlayCallback,
@@ -37,15 +35,13 @@ class RawVimeoPlayer extends StatefulWidget {
     this.showDebugLogging = true,
     this.onControllerStateCallback,
     this.onLoadPlayer,
-    this.mute = false,
+    // this.mute = false,
     this.onPlayerReady,
     required this.controller,
     this.currentSecCallback,
-    this.showControls = true,
     this.dataCallback,
-    this.loop = false,
-    this.allowAutoPause = true,
-    this.playInBackground = false,
+    // this.allowAutoPause = true,
+    // this.playInBackground = false,
   }) : super(key: key);
 
   @override
@@ -58,23 +54,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
     ..controllerStateCallback = widget.onControllerStateCallback;
   late InAppWebViewController _webViewController;
   // ignore: prefer_final_fields
-  bool _isPlayerReady = false;
-  bool _isFullscreen = false;
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  // void _loadJavaScript() async {
-  //   const String script = '''
-  //     var player = new Vimeo.Player(document.querySelector('iframe'));
-  //     player.on('ended', function() {
-  //       // Handle video end event here
-  //       window.flutter_inappwebview.callHandler('onVideoEnd', 'Video ended');
-  //     });
-  //     player.on('loaded', function(id) {
-  //       window.flutter_inappwebview.callHandler('onLoad', '');
-  //     });
-  //   ''';
-
-  //   await _webViewController.evaluateJavascript(source: script);
-  // }
 
   @override
   void initState() {
@@ -92,7 +72,6 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
 
   double _width = 0.0;
   double _height = 0.0;
-
   @override
   void didChangeMetrics() {
     setState(() {
@@ -115,13 +94,13 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
         initialData: InAppWebViewInitialData(
           data: player(
             autoPlay: widget.controller.flags.autoPlay,
-            loop: widget.loop,
-            showControl: widget.showControls,
+            loop: widget.controller.flags.loop,
+            showControl: widget.controller.flags.controls,
             vimeoId: widget.controller.initialVideoId,
             hash: widget.controller.securityId,
-            isMuted: widget.mute,
-            autopause: widget.allowAutoPause,
-            isBackground: widget.playInBackground,
+            isMuted: widget.controller.flags.muted,
+            autopause: widget.controller.flags.autoPause,
+            isBackground: widget.controller.flags.background,
           ),
           baseUrl: Uri.parse(widget.baseUrl),
           encoding: 'utf-8',
@@ -215,6 +194,13 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
               callback: (_) {
                 if (widget.onPlayCallback != null) {
                   widget.onPlayCallback!();
+                }
+                if (widget.controller.flags.autoPlay &&
+                    !widget.controller.value.hasPreloaded) {
+                  // hasPlayed = true;
+                  widget.controller.value.copyWith(hasPreloaded: true);
+                  widget.controller.pause();
+                  if (mounted) setState(() {});
                 }
               },
             )
