@@ -195,13 +195,13 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
                 if (widget.onPlayCallback != null) {
                   widget.onPlayCallback!();
                 }
-                if (widget.controller.flags.autoPlay &&
-                    !widget.controller.value.hasPreloaded) {
-                  // hasPlayed = true;
-                  widget.controller.value.copyWith(hasPreloaded: true);
-                  widget.controller.pause();
-                  if (mounted) setState(() {});
-                }
+                // if (widget.controller.flags.autoPlay &&
+                //     !widget.controller.value.hasPreloaded) {
+                //   // hasPlayed = true;
+                //   widget.controller.value.copyWith(hasPreloaded: true);
+                //   widget.controller.pause();
+                //   if (mounted) setState(() {});
+                // }
               },
             )
             ..addJavaScriptHandler(

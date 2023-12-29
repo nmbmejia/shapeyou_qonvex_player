@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
       securityId: "871762134",
       flags: const VimeoPlayerFlags(
         autoPlay: true,
-        autoInitialize: true,
         loop: true,
         controls: false,
       ),
