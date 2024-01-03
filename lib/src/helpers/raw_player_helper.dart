@@ -61,8 +61,8 @@ mixin class RawPlayerHelper {
 </head>
 
 <body style="margin:0;">
-          <div class="video-container" id="vimeoPlayer" style="background-image: url('$thumbnailUrl');>
-            <iframe src="https://player.vimeo.com/video/$vimeoId?h=$hash&responsive=1&muted=${isMuted ? 1 : 0}&autoplay=${autoPlay ? 1 : 0}&controls=${showControl ? 1 : 0}&loop=${loop ? 1 : 0}&speed=1&autopause=${autopause ? 1 : 0}&background=${isBackground ? 1 : 0}" 
+          <div class="video-container" id="vimeoPlayer">
+            <iframe style="background-image: url('$thumbnailUrl');" src="https://player.vimeo.com/video/$vimeoId?h=$hash&responsive=1&muted=${isMuted ? 1 : 0}&autoplay=${autoPlay ? 1 : 0}&controls=${showControl ? 1 : 0}&loop=${loop ? 1 : 0}&speed=1&autopause=${autopause ? 1 : 0}&background=${isBackground ? 1 : 0}" 
                 width="100%" 
                 height="100%" 
                 frameborder="0"
@@ -89,13 +89,14 @@ mixin class RawPlayerHelper {
             });
         player.on('loaded', function(id) {
           window.flutter_inappwebview.callHandler('onLoad', '');
+          document.querySelector('iframe').style.backgroundImage = 'none';
         });
         player.on('timeupdate', function(data) {
           window.flutter_inappwebview.callHandler('videoPosition', data);
         });
         player.on('play', function(){
           window.flutter_inappwebview.callHandler('onPlay', []);
-          document.getElementById('vimeoPlayer').style.backgroundImage = 'none';
+          
         });
         function mute(){
           player.setVolume(0);
