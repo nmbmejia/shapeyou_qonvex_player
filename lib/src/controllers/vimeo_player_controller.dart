@@ -23,7 +23,7 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
   set controllerStateCallback(ValueChanged<bool>? b) {
     _controllerStateCallback = b;
   }
-
+  
   factory VimeoPlayerController.of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<InheritedVimeoPlayer>()!
       .controller;
@@ -32,7 +32,7 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
 
   void toggleFullscreenMode() =>
       updateValue(value.copyWith(isFullscreen: true));
-
+  
   void reload() => value.webViewController?.reload();
   void play() => _callMethod('play()');
   void pause() => _callMethod('pause()');
