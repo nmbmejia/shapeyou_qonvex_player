@@ -21,6 +21,7 @@ class QonvexVimeoPlayer extends StatefulWidget {
   final bool isControllerDismissable;
   final bool allowFullscreen;
   final String url;
+  
   final ValueChanged<VimeoPlayerDataCallback>? dataCallback;
   int? skipDuration;
   final ValueChanged<bool> isCompleted;

@@ -93,6 +93,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
         initialUserScripts: UnmodifiableListView<UserScript>([]),
         initialData: InAppWebViewInitialData(
           data: player(
+            thumbnailUrl: widget.controller.thumbnailUrl,
             autoPlay: widget.controller.flags.autoPlay,
             loop: widget.controller.flags.loop,
             showControl: widget.controller.flags.controls,

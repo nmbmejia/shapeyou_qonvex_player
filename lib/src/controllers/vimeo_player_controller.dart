@@ -8,8 +8,7 @@ enum PlayerDeviceType { IPHONE, IPAD, OTHERS }
 class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
   final String initialVideoId;
   final VimeoPlayerFlags flags;
-  final String securityId;
-  final String appId;
+  final String securityId, appId, thumbnailUrl;
   final PlayerDeviceType type;
   static ValueChanged<bool>? _controllerStateCallback;
   VimeoPlayerController({
@@ -18,12 +17,13 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
     required this.securityId,
     required this.appId,
     required this.type,
+    this.thumbnailUrl = '',
   }) : super(VimeoPlayerValue(webViewController: null));
   ValueChanged<bool>? get controllerStateCallback => _controllerStateCallback;
   set controllerStateCallback(ValueChanged<bool>? b) {
     _controllerStateCallback = b;
   }
-  
+
   factory VimeoPlayerController.of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<InheritedVimeoPlayer>()!
       .controller;
@@ -32,7 +32,7 @@ class VimeoPlayerController extends ValueNotifier<VimeoPlayerValue> {
 
   void toggleFullscreenMode() =>
       updateValue(value.copyWith(isFullscreen: true));
-  
+
   void reload() => value.webViewController?.reload();
   void play() => _callMethod('play()');
   void pause() => _callMethod('pause()');
