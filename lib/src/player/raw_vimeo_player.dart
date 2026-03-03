@@ -101,6 +101,7 @@ class _RawVimeoPlayerState extends State<RawVimeoPlayer>
             isMuted: widget.controller.flags.muted,
             autopause: widget.controller.flags.autoPause,
             isBackground: widget.controller.flags.background,
+            showMuteButton: widget.controller.flags.showMuteButton,
           ),
           baseUrl: Uri.parse(widget.baseUrl),
           encoding: 'utf-8',

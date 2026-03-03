@@ -17,6 +17,7 @@ class VimeoPlayerFlags {
   final double speed;
   final bool title;
   final bool transparent;
+  final bool showMuteButton;
 
   const VimeoPlayerFlags({
     this.autoPause = true,
@@ -34,6 +35,7 @@ class VimeoPlayerFlags {
     this.transparent = true,
     this.height = 0,
     this.width = 0,
+    this.showMuteButton = false,
   });
 
   VimeoPlayerFlags copyWith(
@@ -51,7 +53,8 @@ class VimeoPlayerFlags {
       bool? portrait,
       double? speed,
       bool? title,
-      bool? transparent}) {
+      bool? transparent,
+      bool? showMuteButton}) {
     return VimeoPlayerFlags(
         autoPause: autoPause ?? this.autoPause,
         autoPlay: autoPlay ?? this.autoPlay,
@@ -67,6 +70,7 @@ class VimeoPlayerFlags {
         title: title ?? this.title,
         transparent: transparent ?? this.transparent,
         height: height ?? this.height,
-        width: width ?? this.width);
+        width: width ?? this.width,
+        showMuteButton: showMuteButton ?? this.showMuteButton);
   }
 }
