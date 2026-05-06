@@ -90,7 +90,7 @@ mixin class RawPlayerHelper {
 
 <body style="margin:0;">
           <div class ="video-container">
-            <iframe src="https://player.vimeo.com/video/$vimeoId?h=$hash&responsive=1&muted=${isMuted ? 1 : 0}&autoplay=${autoPlay ? 1 : 0}&controls=${showControl ? 1 : 0}&loop=${loop ? 1 : 0}&speed=1&autopause=${autopause ? 1 : 0}&background=${isBackground ? 1 : 0}" 
+            <iframe src="https://player.vimeo.com/video/$vimeoId?h=$hash&responsive=1&muted=${isMuted ? 1 : 0}&autoplay=${autoPlay ? 1 : 0}&controls=${showControl ? 1 : 0}&loop=${loop ? 1 : 0}&speed=1&autopause=${autopause ? 1 : 0}&background=${isBackground ? 1 : 0}&chromecast=0&airplay=0"
                 width="100%" 
                 height="100%" 
                 frameborder="0"
